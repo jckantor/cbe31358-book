@@ -1,0 +1,5 @@
+# Heat Exchanger
+
+![](https://www.gunt.de/images/datasheet/1495/WL-315C-Comparison-of-various-heat-exchangers-gunt-1495-zeichnung.jpg)
+
+[GUNT WL 315C Comparison of various heat exchangers](https://www.gunt.de/en/products/comparison-of-various-heat-exchangers/060.315C0/wl315c/glct-1:pa-148:pr-1495)
