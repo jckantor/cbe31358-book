@@ -3,15 +3,15 @@
 
 # # Introduction to Heat Exchangers
 # 
-# Heat exchangers are a ubiquitous feature of chemical processes, energy and power systems, and biological organisms. The purpose of this ex
+# Heat exchangers are a ubiquitous feature of chemical processes, energy and power systems, and biological organisms. The purpose of this experiment is provide an introduction to the operation and analysis of several common types of heat exchange devices encountered in the process industries.
+# 
+# 
 
 # ## Background
 # 
 # ### General Information
 # 
 # https://www.thomasnet.com/articles/process-equipment/double-pipe-heat-exchangers/
-# 
-# https://www.kochheattransfer.com/products/hairpins,-double-pipes-closures
 # 
 # ### Examples
 # 
