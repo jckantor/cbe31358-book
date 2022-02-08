@@ -2,6 +2,8 @@
 # coding: utf-8
 
 # # Introduction to Heat Exchangers
+# 
+# Heat exchangers are a ubiquitous feature of chemical processes, energy and power systems, and biological organisms. The purpose of this ex
 
 # ## Background
 # 
