@@ -24,7 +24,7 @@
 # 
 # Experimentally, consider a set of values for $U$ determined by varying $\dot{m}_h$ and $\dot{m}_c$ over range of values. Because Reynold's number is proportional to flowrate, we can propose a model
 # 
-# $$\frac{1}{U} = R_{tube} + r_h \dot{m}_h^{-0.8} + r_c \dot{m}_h^{-0.8}$$
+# $$\frac{1}{U} = R_{tube} + r_h \dot{m}_h^{-0.8} + r_c \dot{m}_c^{-0.8}$$
 # 
 # This suggests a regression procedure:
 # 
@@ -32,3 +32,9 @@
 # * Plot $\frac{1}{U}$ as a function of $\dot{m}_c^{-0.8}$ for fixed values of $\dot{m}_h$. Estimate r_c from the slope.
 # * Use the data and estimates of $r_h$ and $r_c$ to estimate $R_{tube}$.
 # 
+
+# In[ ]:
+
+
+
+

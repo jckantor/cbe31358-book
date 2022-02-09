@@ -387,24 +387,24 @@
 <div class="math notranslate nohighlight">
 \[dQ = UA (T_h - T_c) dz\]</div>
 <p>where the temperture difference <span class="math notranslate nohighlight">\(T_h - T_c\)</span> is the driving force for heat transfer.</p>
-<p>In a co-current configuration, let <span class="math notranslate nohighlight">\(\dot{m}_h\)</span> and <span class="math notranslate nohighlight">\(\dot{m}_c\)</span> denote flow in the positive <span class="math notranslate nohighlight">\(z\)</span> direction. Heat transfer results in a cooling of the hot stream and a waarming of the cold stream relative to the same direction.</p>
+<p>In a co-current configuration, let <span class="math notranslate nohighlight">\(\dot{q}_h\)</span> and <span class="math notranslate nohighlight">\(\dot{q}_c\)</span> denote the volumetric flow in the positive <span class="math notranslate nohighlight">\(z\)</span> direction. Heat transfer results in a cooling of the hot stream and a waarming of the cold stream relative to the same direction.</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
--\dot{m}_h C_{p,h} dT_h &amp; = dQ \\
-\dot{m}_c C_{p,c} dT_c &amp; = dQ
+-\rho_h\dot{q}_h C_{p,h} dT_h &amp; = dQ \\
+\rho_c\dot{q}_c C_{p,c} dT_c &amp; = dQ
 \end{align*}\]</div>
-<p>In co-current operation the temperature of both inlet flows are known at <span class="math notranslate nohighlight">\(z=0\)</span>. After substitution for <span class="math notranslate nohighlight">\(dQ\)</span>, the temperature profile is  given by a pair of first order differential equations with  initial conditions for <span class="math notranslate nohighlight">\(T_h(0)\)</span> and <span class="math notranslate nohighlight">\(T_c(0)\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\rho_h\)</span> and <span class="math notranslate nohighlight">\(\rho_c\)</span> refer to density of the hot and cold streams, and <span class="math notranslate nohighlight">\(C_{p,h}\)</span> and <span class="math notranslate nohighlight">\(C_{p,c}\)</span> are specific heat capacities. In co-current operation the temperature of both inlet flows are known at <span class="math notranslate nohighlight">\(z=0\)</span>. After substitution for <span class="math notranslate nohighlight">\(dQ\)</span>, the temperature profile is  given by a pair of first order differential equations with  initial conditions for <span class="math notranslate nohighlight">\(T_h(0)\)</span> and <span class="math notranslate nohighlight">\(T_c(0)\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\frac{dT_h}{dz} &amp; = -\frac{UA}{\dot{m}_hC_{p,h}}(T_h - T_c)  &amp; T_h(z=0) = T_{h,0}\\
-\frac{dT_c}{dz} &amp; = \frac{UA}{\dot{m}_cC_{p,c}}(T_h - T_c) &amp; T_c(z=0) = T_{c, 0}
+\frac{dT_h}{dz} &amp; = -\frac{UA}{\rho_h\dot{q}_hC_{p,h}}(T_h - T_c)  &amp; T_h(z=0) = T_{h,0}\\
+\frac{dT_c}{dz} &amp; = \frac{UA}{\rho_c\dot{q}_cC_{p,c}}(T_h - T_c) &amp; T_c(z=0) = T_{c, 0}
 \end{align*}\]</div>
 <p>This is an initial value problem of two differential equations that can be solved numerically with <code class="docutils literal notranslate"><span class="pre">scipy.integrate.solve_ivp</span></code> as demonstrated below.</p>
 <p>The results of the temperature calculation can be used to complete the rating calculation.</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-Q_h &amp; = \dot{m}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
-Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
+Q_h &amp; = \rho_h\dot{q}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
+Q_c &amp; = \rho_c\dot{q}_c C_{p,c} (T_{c,1} - T_{c,0})
 \end{align*}\]</div>
 <p>where we expect <span class="math notranslate nohighlight">\(Q = Q_h = Q_c\)</span> at steady state and with negligible heat losses.</p>
 <div class="cell docutils container">
@@ -416,9 +416,10 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 <span class="c1"># parameter values</span>
 <span class="n">A</span> <span class="o">=</span> <span class="mf">0.5</span>       <span class="c1"># square meters</span>
 <span class="n">U</span> <span class="o">=</span> <span class="mi">2000</span>      <span class="c1"># watts/square meter/deg C</span>
-<span class="n">mh</span> <span class="o">=</span> <span class="mi">600</span>      <span class="c1"># kg/hour</span>
-<span class="n">mc</span> <span class="o">=</span> <span class="mi">1200</span>     <span class="c1"># kg/hour</span>
-<span class="n">Cp</span> <span class="o">=</span> <span class="mi">4184</span>     <span class="c1"># Joules/kg/deg C     </span>
+<span class="n">qh</span> <span class="o">=</span> <span class="mi">600</span>      <span class="c1"># liter/hour</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="mi">1200</span>     <span class="c1"># liter/hour</span>
+<span class="n">Cp</span> <span class="o">=</span> <span class="mi">4184</span>     <span class="c1"># Joules/kg/deg C    </span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c1"># 1 kg/liter</span>
 
 <span class="c1"># feed temperatures</span>
 <span class="n">Th0</span> <span class="o">=</span> <span class="mf">55.0</span>
@@ -427,8 +428,8 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 <span class="c1"># differential equation model</span>
 <span class="k">def</span> <span class="nf">deriv</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">Th</span><span class="p">,</span> <span class="n">Tc</span> <span class="o">=</span> <span class="n">y</span>
-    <span class="n">dTh</span> <span class="o">=</span> <span class="o">-</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">mh</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">Cp</span><span class="p">)</span>
-    <span class="n">dTc</span> <span class="o">=</span>  <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">mc</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">Cp</span><span class="p">)</span>
+    <span class="n">dTh</span> <span class="o">=</span> <span class="o">-</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">rho</span><span class="o">*</span><span class="n">qh</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">Cp</span><span class="p">)</span>
+    <span class="n">dTc</span> <span class="o">=</span>  <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="n">rho</span><span class="o">*</span><span class="n">qc</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">Cp</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">dTh</span><span class="p">,</span> <span class="n">dTc</span><span class="p">]</span>
 
 <span class="c1"># initial conditions</span>
@@ -448,7 +449,7 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7faa18108f10&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fef6d803ca0&gt;]
 </pre></div>
 </div>
 <img alt="../../_images/02_double-pipe-hx_3_1.png" src="../../_images/02_double-pipe-hx_3_1.png" />
@@ -459,22 +460,22 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 <h3><span class="section-number">1.2.2.2. </span>Measuring Heat Transfer Coefficient<a class="headerlink" href="#measuring-heat-transfer-coefficient" title="Permalink to this headline">¶</a></h3>
 <p>An analytical solution for the difference <span class="math notranslate nohighlight">\(T_h - T_c\)</span> is possible for this system of equations. Subtracting the second equation from the first gives</p>
 <div class="math notranslate nohighlight">
-\[\frac{d(T_h - T_c)}{dz} = -UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right) (T_h - T_c)\]</div>
+\[\frac{d(T_h - T_c)}{dz} = -UA\left(\frac{1}{\rho_h\dot{q}_hC_{p,h}} + \frac{1}{\rho_c\dot{q}_cC_{p,c}}\right) (T_h - T_c)\]</div>
 <p>This is a first-order linear differentiaal equation with constant coefficients that can be solved by a separation of variables. One form of the solution is</p>
 <div class="math notranslate nohighlight">
-\[\ln \frac{T_h - T_c}{T_{h,0} - T_{c,0}} = -UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\]</div>
+\[\ln \frac{T_h - T_c}{T_{h,0} - T_{c,0}} = -UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\]</div>
 <p>where <span class="math notranslate nohighlight">\(T_h\)</span> and <span class="math notranslate nohighlight">\(T_c\)</span> are functions of <span class="math notranslate nohighlight">\(z\)</span> on the interval <span class="math notranslate nohighlight">\(0 \leq z \leq 1\)</span>.</p>
 <p>An overall balance for the total heat transferred between the hot and cold streams is given by</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-Q_h &amp; = \dot{m}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
-Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
+Q_h &amp; = \rho\dot{q}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
+Q_c &amp; = \rho\dot{q}_c C_{p,c} (T_{c,1} - T_{c,0})
 \end{align*}\]</div>
 <p>Rearranging</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\frac{1}{\dot{m}_hC_{p,h}} &amp; = \frac{T_{h,0} - T_{h,1}}{Q_h} \\
-\frac{1}{\dot{m}_cC_{p,c}} &amp; = \frac{T_{c,1} - T_{c,0}}{Q_c}
+\frac{1}{\rho\dot{q}_hC_{p,h}} &amp; = \frac{T_{h,0} - T_{h,1}}{Q_h} \\
+\frac{1}{\rho\dot{q}_cC_{p,c}} &amp; = \frac{T_{c,1} - T_{c,0}}{Q_c}
 \end{align*}\]</div>
 <p>At steady-state <span class="math notranslate nohighlight">\(Q_h = Q_c\)</span>. With a little more algebra this leaves</p>
 <div class="math notranslate nohighlight">
@@ -494,9 +495,10 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 
 <span class="c1"># known parameter values</span>
 <span class="n">A</span> <span class="o">=</span> <span class="mf">5.0</span>
-<span class="n">mh</span> <span class="o">=</span> <span class="mi">600</span>
-<span class="n">mc</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">qh</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="mi">1200</span>
 <span class="n">Cp</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">1.0</span>
 
 <span class="c1"># experimental data</span>
 <span class="n">z_expt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -508,8 +510,8 @@ Q_c &amp; = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
 <span class="n">Tc0</span><span class="p">,</span> <span class="n">Tc1</span> <span class="o">=</span> <span class="n">Tc_expt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Tc_expt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># compute heat duty</span>
-<span class="n">Qh</span> <span class="o">=</span> <span class="n">mh</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">Th0</span> <span class="o">-</span> <span class="n">Th1</span><span class="p">)</span>
-<span class="n">Qc</span> <span class="o">=</span> <span class="n">mc</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">Tc1</span> <span class="o">-</span> <span class="n">Tc0</span><span class="p">)</span>
+<span class="n">Qh</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">qh</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">Th0</span> <span class="o">-</span> <span class="n">Th1</span><span class="p">)</span>
+<span class="n">Qc</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">qc</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">Tc1</span> <span class="o">-</span> <span class="n">Tc0</span><span class="p">)</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="p">(</span><span class="n">Qh</span> <span class="o">+</span> <span class="n">Qc</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Heat duty = </span><span class="si">{</span><span class="n">Q</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> watts&quot;</span><span class="p">)</span>
 
@@ -547,7 +549,7 @@ U (LMTD estimate) = 545.5 watt/deg C/m**2
     <span class="n">U</span><span class="p">,</span> <span class="n">Th0</span><span class="p">,</span> <span class="n">Tc0</span> <span class="o">=</span> <span class="n">parameters</span>
     <span class="k">def</span> <span class="nf">deriv</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">Th</span><span class="p">,</span> <span class="n">Tc</span> <span class="o">=</span> <span class="n">y</span>
-        <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mh</span><span class="o">*</span><span class="n">Cp</span><span class="p">),</span> <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mc</span><span class="o">*</span><span class="n">Cp</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">qh</span><span class="o">*</span><span class="n">Cp</span><span class="p">),</span> <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">qc</span><span class="o">*</span><span class="n">Cp</span><span class="p">)]</span>
     <span class="n">soln</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">Th0</span><span class="p">,</span> <span class="n">Tc0</span><span class="p">],</span> <span class="n">t_eval</span><span class="o">=</span><span class="n">z_eval</span><span class="p">,</span> <span class="n">max_step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
     <span class="n">Th</span> <span class="o">=</span> <span class="n">soln</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
     <span class="n">Tc</span> <span class="o">=</span> <span class="n">soln</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
@@ -568,31 +570,27 @@ U (LMTD estimate) = 545.5 watt/deg C/m**2
 <span class="n">Th_pred</span><span class="p">,</span> <span class="n">Tc_pred</span> <span class="o">=</span> <span class="n">double_pipe_cocurrent</span><span class="p">(</span><span class="n">z_eval</span><span class="p">,</span> <span class="n">p_min</span><span class="p">)</span>
 
 <span class="c1"># plot solution</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_eval</span><span class="p">,</span> <span class="n">Th_pred</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T_h&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_eval</span><span class="p">,</span> <span class="n">Tc_pred</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T_c&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_expt</span><span class="p">,</span> <span class="n">Th_expt</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_expt</span><span class="p">,</span> <span class="n">Tc_expt</span><span class="p">,</span> <span class="s1">&#39;b.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;fractional distance z&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;deg C&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Co-current Heat Exchanger: U = </span><span class="si">{</span><span class="n">U_min</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> watts/deg/m**2&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z_eval</span><span class="p">,</span> <span class="n">Th_pred</span><span class="p">,</span> <span class="n">Tc_pred</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;Th&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span><span class="p">])</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Th&quot;</span> <span class="p">:</span>  <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span> <span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">})</span>
+
+<span class="n">expt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z_expt</span><span class="p">,</span> <span class="n">Th_expt</span><span class="p">,</span> <span class="n">Tc_expt</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;Th&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span><span class="p">])</span>
+<span class="n">expt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Th&quot;</span> <span class="p">:</span> <span class="s2">&quot;r.&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span> <span class="p">:</span> <span class="s2">&quot;b.&quot;</span><span class="p">},</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+          <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;fractional distance z&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;deg C&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Co-current Heat Exchanger: U = </span><span class="si">{</span><span class="n">U_min</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> watts/deg/m**2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Heat duty = 52800.0 watts
-NTU = 1.70
-LMTD = 19.36 deg C
-U (LMTD estimate) = 545.5 watt/deg C/m**2
-Optimization terminated successfully.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
          Current function value: 8.273495
          Iterations: 75
          Function evaluations: 141
 U (model fit) = 554.4 watt/deg C/m**2
 </pre></div>
 </div>
-<img alt="../../_images/02_double-pipe-hx_8_1.png" src="../../_images/02_double-pipe-hx_8_1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Co-current Heat Exchanger: U = 554.4 watts/deg/m**2&#39;}, xlabel=&#39;fractional distance z&#39;, ylabel=&#39;deg C&#39;&gt;
+</pre></div>
+</div>
+<img alt="../../_images/02_double-pipe-hx_8_2.png" src="../../_images/02_double-pipe-hx_8_2.png" />
 </div>
 </div>
 </div>
@@ -606,17 +604,17 @@ U (model fit) = 554.4 watt/deg C/m**2
 \[Q = UA \int_0^1 (T_h(z) - T_c(z)) dz\]</div>
 <p>We have a solution for the difference <span class="math notranslate nohighlight">\(T_h(z) - T_c(z)\)</span> that can be written</p>
 <div class="math notranslate nohighlight">
-\[T_h(z) - T_c(z) = (T_{h,0} - T_{c,0}) \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)\]</div>
+\[T_h(z) - T_c(z) = (T_{h,0} - T_{c,0}) \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)\]</div>
 <p>Performing the integrations produces a rating equation</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)dz \\
-&amp; = -\frac{T_{h,0} - T_{c,0}}{\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}}\left[\exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)\right]\biggr\rvert_0^1 \\
+Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)dz \\
+&amp; = -\frac{T_{h,0} - T_{c,0}}{\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}}\left[\exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)\right]\biggr\rvert_0^1 \\
 \end{align*}\]</div>
 <p>which provides a solution</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\implies Q &amp; = \frac{T_{h,0} - T_{c,0}}{\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}}\left[1 - \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)\right)\right]
+\implies Q &amp; = \frac{T_{h,0} - T_{c,0}}{\frac{1}{\rho\dot{a}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}}\left[1 - \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)\right)\right]
 \end{align*}\]</div>
 <p>This is an equation that predicts the heat transfer in terms of the known stream input temperatures and flowrates.</p>
 </div>
@@ -631,14 +629,14 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_
 <p>Because of the counter-current flow, <span class="math notranslate nohighlight">\(T_h\)</span> and <span class="math notranslate nohighlight">\(T_c\)</span> both increase in the direction of increasaing <span class="math notranslate nohighlight">\(z\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\dot{m}_h C_{p,h} dT_h &amp; = dQ \\
-\dot{m}_c C_{p,c} dT_c &amp; = dQ
+\rho\dot{q}_h C_{p,h} dT_h &amp; = dQ \\
+\rho\dot{q}_c C_{p,c} dT_c &amp; = dQ
 \end{align*}\]</div>
 <p>Substitution yields</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\frac{dT_h}{dz} &amp; = \frac{UA}{\dot{m}_hC_{p,h}}(T_h - T_c) &amp; T_h(z=1) = T_{h,1} \\
-\frac{dT_c}{dz} &amp; = \frac{UA}{\dot{m}_cC_{p,c}}(T_h - T_c) &amp; T_c(z=0) = T_{c,0}
+\frac{dT_h}{dz} &amp; = \frac{UA}{\rho\dot{q}_hC_{p,h}}(T_h - T_c) &amp; T_h(z=1) = T_{h,1} \\
+\frac{dT_c}{dz} &amp; = \frac{UA}{\rho\dot{q}_cC_{p,c}}(T_h - T_c) &amp; T_c(z=0) = T_{c,0}
 \end{align*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(T_c(0)\)</span> and <span class="math notranslate nohighlight">\(T_h(1)\)</span> are specified at opposite ends of the heat exchanger. For this reason, these equations for the counter-current heat exchanger comprise a two point boundary value problem.</p>
 <p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_bvp.html"><code class="docutils literal notranslate"><span class="pre">scipy.integrate.solve_bvp</span></code></a></p>
@@ -651,9 +649,10 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_
 <span class="c1"># parameter values</span>
 <span class="n">A</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">U</span> <span class="o">=</span> <span class="mi">700</span>
-<span class="n">mh</span> <span class="o">=</span> <span class="mi">600</span>
-<span class="n">mc</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">qh</span> <span class="o">=</span> <span class="mi">600</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="mi">1200</span>
 <span class="n">Cp</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">1.0</span>
 
 <span class="c1"># feed temperatures</span>
 <span class="n">Th1</span> <span class="o">=</span> <span class="mf">55.0</span>
@@ -665,7 +664,7 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_
 <span class="c1"># differential equation model</span>
 <span class="k">def</span> <span class="nf">deriv</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">Th</span><span class="p">,</span> <span class="n">Tc</span> <span class="o">=</span> <span class="n">y</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mh</span><span class="o">*</span><span class="n">Cp</span><span class="p">),</span> <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">mc</span><span class="o">*</span><span class="n">Cp</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span> <span class="o">-</span> <span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">qh</span><span class="o">*</span><span class="n">Cp</span><span class="p">),</span> <span class="n">U</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">Th</span><span class="o">-</span><span class="n">Tc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">qc</span><span class="o">*</span><span class="n">Cp</span><span class="p">)]</span>
 
 <span class="k">def</span> <span class="nf">bc</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">y1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">Th1</span><span class="p">,</span>  <span class="c1"># bc for Th at z=1</span>
@@ -676,23 +675,19 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_
 <span class="n">y_guess</span> <span class="o">=</span> <span class="p">(</span><span class="n">Th1</span> <span class="o">+</span> <span class="n">Tc0</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>  <span class="c1"># initial guess</span>
 <span class="n">soln</span> <span class="o">=</span> <span class="n">solve_bvp</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">z_eval</span><span class="p">,</span> <span class="n">y_guess</span><span class="p">)</span>
 
-
 <span class="c1"># plot solution</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">soln</span><span class="o">.</span><span class="n">x</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">soln</span><span class="o">.</span><span class="n">y</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T_h&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T_c&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Th1</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Tc0</span><span class="p">,</span> <span class="s1">&#39;b.&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;deg C&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;z&quot;</span> <span class="p">:</span> <span class="n">z_eval</span><span class="p">,</span> <span class="s2">&quot;Th&quot;</span> <span class="p">:</span> <span class="n">soln</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="s2">&quot;Tc&quot;</span> <span class="p">:</span> <span class="n">soln</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]})</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Th&quot;</span> <span class="p">:</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span> <span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;deg C&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;r.&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;b.&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/02_double-pipe-hx_11_0.png" src="../../_images/02_double-pipe-hx_11_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fef6e220850&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/02_double-pipe-hx_11_1.png" src="../../_images/02_double-pipe-hx_11_1.png" />
 </div>
 </div>
 </div>

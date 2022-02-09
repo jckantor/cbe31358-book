@@ -39,7 +39,7 @@
 
 # ## Reading Tidy Data
 # 
-# The first We proceed assuming data is organized by Tidy Data principles, each data set corresponding to an experiment or other clearly defined collection of observations.
+# We assume data is organized by Tidy Data principles for the rest of this notebook, with each data set corresponding to an experiment or other clearly defined collection of observations.
 
 # ### From .csv files
 # 

@@ -31,18 +31,18 @@
 # 
 # where the temperture difference $T_h - T_c$ is the driving force for heat transfer. 
 # 
-# In a co-current configuration, let $\dot{m}_h$ and $\dot{m}_c$ denote flow in the positive $z$ direction. Heat transfer results in a cooling of the hot stream and a waarming of the cold stream relative to the same direction.
+# In a co-current configuration, let $\dot{q}_h$ and $\dot{q}_c$ denote the volumetric flow in the positive $z$ direction. Heat transfer results in a cooling of the hot stream and a waarming of the cold stream relative to the same direction.
 # 
 # \begin{align*}
-# -\dot{m}_h C_{p,h} dT_h & = dQ \\
-# \dot{m}_c C_{p,c} dT_c & = dQ
+# -\rho_h\dot{q}_h C_{p,h} dT_h & = dQ \\
+# \rho_c\dot{q}_c C_{p,c} dT_c & = dQ
 # \end{align*}
 # 
-# In co-current operation the temperature of both inlet flows are known at $z=0$. After substitution for $dQ$, the temperature profile is  given by a pair of first order differential equations with  initial conditions for $T_h(0)$ and $T_c(0)$
+# where $\rho_h$ and $\rho_c$ refer to density of the hot and cold streams, and $C_{p,h}$ and $C_{p,c}$ are specific heat capacities. In co-current operation the temperature of both inlet flows are known at $z=0$. After substitution for $dQ$, the temperature profile is  given by a pair of first order differential equations with  initial conditions for $T_h(0)$ and $T_c(0)$
 # 
 # \begin{align*}
-# \frac{dT_h}{dz} & = -\frac{UA}{\dot{m}_hC_{p,h}}(T_h - T_c)  & T_h(z=0) = T_{h,0}\\
-# \frac{dT_c}{dz} & = \frac{UA}{\dot{m}_cC_{p,c}}(T_h - T_c) & T_c(z=0) = T_{c, 0}
+# \frac{dT_h}{dz} & = -\frac{UA}{\rho_h\dot{q}_hC_{p,h}}(T_h - T_c)  & T_h(z=0) = T_{h,0}\\
+# \frac{dT_c}{dz} & = \frac{UA}{\rho_c\dot{q}_cC_{p,c}}(T_h - T_c) & T_c(z=0) = T_{c, 0}
 # \end{align*}
 # 
 # This is an initial value problem of two differential equations that can be solved numerically with ``scipy.integrate.solve_ivp`` as demonstrated below. 
@@ -50,8 +50,8 @@
 # The results of the temperature calculation can be used to complete the rating calculation.
 # 
 # \begin{align*}
-# Q_h & = \dot{m}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
-# Q_c & = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
+# Q_h & = \rho_h\dot{q}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
+# Q_c & = \rho_c\dot{q}_c C_{p,c} (T_{c,1} - T_{c,0})
 # \end{align*}
 # 
 # where we expect $Q = Q_h = Q_c$ at steady state and with negligible heat losses.
@@ -67,9 +67,10 @@ from scipy.integrate import solve_ivp
 # parameter values
 A = 0.5       # square meters
 U = 2000      # watts/square meter/deg C
-mh = 600      # kg/hour
-mc = 1200     # kg/hour
-Cp = 4184     # Joules/kg/deg C     
+qh = 600      # liter/hour
+qc = 1200     # liter/hour
+Cp = 4184     # Joules/kg/deg C    
+rho = 1.0     # 1 kg/liter
 
 # feed temperatures
 Th0 = 55.0
@@ -78,8 +79,8 @@ Tc0 = 18.0
 # differential equation model
 def deriv(z, y):
     Th, Tc = y
-    dTh = -U*A*(Th - Tc)/((mh/3600)*Cp)
-    dTc =  U*A*(Th-Tc)/((mc/3600)*Cp)
+    dTh = -U*A*(Th - Tc)/((rho*qh/3600)*Cp)
+    dTc =  U*A*(Th-Tc)/((rho*qc/3600)*Cp)
     return [dTh, dTc]
 
 # initial conditions
@@ -101,26 +102,26 @@ ax.plot(0, df.loc[0, "Tc"], 'b.', ms=20)
 # 
 # An analytical solution for the difference $T_h - T_c$ is possible for this system of equations. Subtracting the second equation from the first gives
 # 
-# $$\frac{d(T_h - T_c)}{dz} = -UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right) (T_h - T_c)$$
+# $$\frac{d(T_h - T_c)}{dz} = -UA\left(\frac{1}{\rho_h\dot{q}_hC_{p,h}} + \frac{1}{\rho_c\dot{q}_cC_{p,c}}\right) (T_h - T_c)$$
 # 
 # This is a first-order linear differentiaal equation with constant coefficients that can be solved by a separation of variables. One form of the solution is
 # 
-# $$\ln \frac{T_h - T_c}{T_{h,0} - T_{c,0}} = -UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z$$
+# $$\ln \frac{T_h - T_c}{T_{h,0} - T_{c,0}} = -UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z$$
 # 
 # where $T_h$ and $T_c$ are functions of $z$ on the interval $0 \leq z \leq 1$.
 # 
 # An overall balance for the total heat transferred between the hot and cold streams is given by
 # 
 # \begin{align*}
-# Q_h & = \dot{m}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
-# Q_c & = \dot{m}_c C_{p,c} (T_{c,1} - T_{c,0})
+# Q_h & = \rho\dot{q}_h C_{p,h} (T_{h,0} - T_{h,1}) \\
+# Q_c & = \rho\dot{q}_c C_{p,c} (T_{c,1} - T_{c,0})
 # \end{align*}
 # 
 # Rearranging
 # 
 # \begin{align*}
-# \frac{1}{\dot{m}_hC_{p,h}} & = \frac{T_{h,0} - T_{h,1}}{Q_h} \\
-# \frac{1}{\dot{m}_cC_{p,c}} & = \frac{T_{c,1} - T_{c,0}}{Q_c}
+# \frac{1}{\rho\dot{q}_hC_{p,h}} & = \frac{T_{h,0} - T_{h,1}}{Q_h} \\
+# \frac{1}{\rho\dot{q}_cC_{p,c}} & = \frac{T_{c,1} - T_{c,0}}{Q_c}
 # \end{align*}
 # 
 # At steady-state $Q_h = Q_c$. With a little more algebra this leaves 
@@ -137,7 +138,7 @@ ax.plot(0, df.loc[0, "Tc"], 'b.', ms=20)
 
 # The following code provides estimates the value of $U$ from experimental data in two steps. The first step uses the temperatures measured at both ends of the exchanger and the measured heat duty to compute the LMTD and $U$. The second step refines the estimate by fitting a model to the experimental results.
 
-# In[5]:
+# In[12]:
 
 
 import numpy as np
@@ -146,9 +147,10 @@ from scipy.optimize import fmin
 
 # known parameter values
 A = 5.0
-mh = 600
-mc = 1200
+qh = 600
+qc = 1200
 Cp = 4.0
+rho = 1.0
 
 # experimental data
 z_expt = np.linspace(0, 1, 5)
@@ -160,8 +162,8 @@ Th0, Th1 = Th_expt[0], Th_expt[-1]
 Tc0, Tc1 = Tc_expt[0], Tc_expt[-1]
 
 # compute heat duty
-Qh = mh*Cp*(Th0 - Th1)
-Qc = mc*Cp*(Tc1 - Tc0)
+Qh = rho*qh*Cp*(Th0 - Th1)
+Qc = rho*qc*Cp*(Tc1 - Tc0)
 Q = (Qh + Qc)/2
 print(f"Heat duty = {Q:.1f} watts")
 
@@ -180,7 +182,7 @@ print(f"U (LMTD estimate) = {U:.1f} watt/deg C/m**2")
 
 # Fitting temperature profiles
 
-# In[ ]:
+# In[18]:
 
 
 # initial estimate of fitted parameters
@@ -191,7 +193,7 @@ def double_pipe_cocurrent(z_eval, parameters):
     U, Th0, Tc0 = parameters
     def deriv(z, y):
         Th, Tc = y
-        return [-U*A*(Th - Tc)/(mh*Cp), U*A*(Th-Tc)/(mc*Cp)]
+        return [-U*A*(Th - Tc)/(rho*qh*Cp), U*A*(Th-Tc)/(rho*qc*Cp)]
     soln = solve_ivp(deriv, [0, 1], [Th0, Tc0], t_eval=z_eval, max_step=0.01)
     Th = soln.y[0,:]
     Tc = soln.y[1,:]
@@ -212,15 +214,12 @@ z_eval = np.linspace(0, 1, 201)
 Th_pred, Tc_pred = double_pipe_cocurrent(z_eval, p_min)
 
 # plot solution
-plt.plot(z_eval, Th_pred, 'r', label="T_h")
-plt.plot(z_eval, Tc_pred, 'b', label="T_c")
-plt.legend()
-plt.plot(z_expt, Th_expt, 'r.', ms=20)
-plt.plot(z_expt, Tc_expt, 'b.', ms=20)
-plt.xlabel("fractional distance z")
-plt.ylabel("deg C")
-plt.title(f"Co-current Heat Exchanger: U = {U_min:.1f} watts/deg/m**2")
-plt.grid(True)
+df = pd.DataFrame(np.array([z_eval, Th_pred, Tc_pred]).T, columns=["z", "Th", "Tc"])
+ax = df.plot(x="z", style={"Th" :  "r", "Tc" : "b"})
+
+expt = pd.DataFrame(np.array([z_expt, Th_expt, Tc_expt]).T, columns=["z", "Th", "Tc"])
+expt.plot(ax=ax, x="z", style={"Th" : "r.", "Tc" : "b."}, ms=20, grid=True,
+          xlabel="fractional distance z", ylabel="deg C", title=f"Co-current Heat Exchanger: U = {U_min:.1f} watts/deg/m**2")
 
 
 # ### Rating, revisited
@@ -235,19 +234,19 @@ plt.grid(True)
 # 
 # We have a solution for the difference $T_h(z) - T_c(z)$ that can be written
 # 
-# $$T_h(z) - T_c(z) = (T_{h,0} - T_{c,0}) \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)$$
+# $$T_h(z) - T_c(z) = (T_{h,0} - T_{c,0}) \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)$$
 # 
 # Performing the integrations produces a rating equation
 # 
 # \begin{align*}
-# Q & = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)dz \\
-# & = -\frac{T_{h,0} - T_{c,0}}{\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}}\left[\exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)z\right)\right]\biggr\rvert_0^1 \\
+# Q & = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)dz \\
+# & = -\frac{T_{h,0} - T_{c,0}}{\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}}\left[\exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)z\right)\right]\biggr\rvert_0^1 \\
 # \end{align*}
 # 
 # which provides a solution
 # 
 # \begin{align*}
-# \implies Q & = \frac{T_{h,0} - T_{c,0}}{\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}}\left[1 - \exp\left(-UA\left(\frac{1}{\dot{m}_hC_{p,h}} + \frac{1}{\dot{m}_cC_{p,c}}\right)\right)\right]
+# \implies Q & = \frac{T_{h,0} - T_{c,0}}{\frac{1}{\rho\dot{a}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}}\left[1 - \exp\left(-UA\left(\frac{1}{\rho\dot{q}_hC_{p,h}} + \frac{1}{\rho\dot{q}_cC_{p,c}}\right)\right)\right]
 # \end{align*}
 # 
 # This is an equation that predicts the heat transfer in terms of the known stream input temperatures and flowrates.
@@ -263,22 +262,22 @@ plt.grid(True)
 # Because of the counter-current flow, $T_h$ and $T_c$ both increase in the direction of increasaing $z$
 # 
 # \begin{align*}
-# \dot{m}_h C_{p,h} dT_h & = dQ \\
-# \dot{m}_c C_{p,c} dT_c & = dQ
+# \rho\dot{q}_h C_{p,h} dT_h & = dQ \\
+# \rho\dot{q}_c C_{p,c} dT_c & = dQ
 # \end{align*}
 # 
 # Substitution yields
 # 
 # \begin{align*}
-# \frac{dT_h}{dz} & = \frac{UA}{\dot{m}_hC_{p,h}}(T_h - T_c) & T_h(z=1) = T_{h,1} \\
-# \frac{dT_c}{dz} & = \frac{UA}{\dot{m}_cC_{p,c}}(T_h - T_c) & T_c(z=0) = T_{c,0}
+# \frac{dT_h}{dz} & = \frac{UA}{\rho\dot{q}_hC_{p,h}}(T_h - T_c) & T_h(z=1) = T_{h,1} \\
+# \frac{dT_c}{dz} & = \frac{UA}{\rho\dot{q}_cC_{p,c}}(T_h - T_c) & T_c(z=0) = T_{c,0}
 # \end{align*}
 # 
 # where $T_c(0)$ and $T_h(1)$ are specified at opposite ends of the heat exchanger. For this reason, these equations for the counter-current heat exchanger comprise a two point boundary value problem.
 # 
 # [``scipy.integrate.solve_bvp``](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_bvp.html)
 
-# In[ ]:
+# In[32]:
 
 
 import matplotlib.pyplot as plt
@@ -288,9 +287,10 @@ from scipy.integrate import solve_bvp
 # parameter values
 A = 5
 U = 700
-mh = 600
-mc = 1200
+qh = 600
+qc = 1200
 Cp = 4.0
+rho = 1.0
 
 # feed temperatures
 Th1 = 55.0
@@ -302,7 +302,7 @@ n = 201
 # differential equation model
 def deriv(z, y):
     Th, Tc = y
-    return [U*A*(Th - Tc)/(mh*Cp), U*A*(Th-Tc)/(mc*Cp)]
+    return [U*A*(Th - Tc)/(rho*qh*Cp), U*A*(Th-Tc)/(rho*qc*Cp)]
 
 def bc(y0, y1):
     return [y1[0] - Th1,  # bc for Th at z=1
@@ -313,16 +313,15 @@ z_eval = np.linspace(0, 1, n)
 y_guess = (Th1 + Tc0)*np.ones((2, n))/2  # initial guess
 soln = solve_bvp(deriv, bc, z_eval, y_guess)
 
-
 # plot solution
-z = soln.x
-y = soln.y
-plt.plot(z, y[0,:], 'r', label="T_h")
-plt.plot(z, y[1,:], 'b', label="T_c")
-plt.legend()
-plt.plot(1, Th1, 'r.', ms=20)
-plt.plot(0, Tc0, 'b.', ms=20)
-plt.xlabel("Distance")
-plt.ylabel("deg C")
-plt.grid(True)
+df = pd.DataFrame({"z" : z_eval, "Th" : soln.y[0, :], "Tc" : soln.y[1, :]})
+ax = df.plot(x="z", style={"Th" : "r", "Tc" : "b"}, xlabel="distance", ylabel="deg C", grid=True)
+ax.plot(1, df.iloc[-1, 1], "r.", ms=20)
+ax.plot(0, df.iloc[0, 2], "b.", ms=20)
+
+
+# In[ ]:
+
+
+
 
