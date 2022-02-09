@@ -313,13 +313,13 @@
 <div class="math notranslate nohighlight">
 \[Nu = C \cdot Re^{4/5} \cdot Pr^n\]</div>
 <p>where <span class="math notranslate nohighlight">\(C\)</span> is a constant, <span class="math notranslate nohighlight">\(Re\)</span> is the Reynold’s number that is proportional to flowrate, and <span class="math notranslate nohighlight">\(Pr\)</span> is the Prandtl number determined by fluid properties.</p>
-<p>Experimentally, consider a set of values for <span class="math notranslate nohighlight">\(U\)</span> determined by varying <span class="math notranslate nohighlight">\(\dot{m}_h\)</span> and <span class="math notranslate nohighlight">\(\dot{m}_c\)</span> over range of values. Because Reynold’s number is proportional to flowrate, we can propose a model</p>
+<p>Experimentally, consider a set of values for <span class="math notranslate nohighlight">\(U\)</span> determined by varying <span class="math notranslate nohighlight">\(\dot{q}_h\)</span> and <span class="math notranslate nohighlight">\(\dot{q}_c\)</span> over range of values. Because Reynold’s number is proportional to flowrate, we can propose a model</p>
 <div class="math notranslate nohighlight">
-\[\frac{1}{U} = R_{tube} + r_h \dot{m}_h^{-0.8} + r_c \dot{m}_c^{-0.8}\]</div>
+\[\frac{1}{U} = R_{tube} + r_h \dot{q}_h^{-0.8} + r_c \dot{q}_c^{-0.8}\]</div>
 <p>This suggests a regression procedure:</p>
 <ul class="simple">
-<li><p>Plot <span class="math notranslate nohighlight">\(\frac{1}{U}\)</span> as a function of <span class="math notranslate nohighlight">\(\dot{m}_h^{-0.8}\)</span> for fixed values of <span class="math notranslate nohighlight">\(\dot{m}_c\)</span>. Esitmate <span class="math notranslate nohighlight">\(r_h\)</span> from the slope.</p></li>
-<li><p>Plot <span class="math notranslate nohighlight">\(\frac{1}{U}\)</span> as a function of <span class="math notranslate nohighlight">\(\dot{m}_c^{-0.8}\)</span> for fixed values of <span class="math notranslate nohighlight">\(\dot{m}_h\)</span>. Estimate r_c from the slope.</p></li>
+<li><p>Plot <span class="math notranslate nohighlight">\(\frac{1}{U}\)</span> as a function of <span class="math notranslate nohighlight">\(\dot{q}_h^{-0.8}\)</span> for fixed values of <span class="math notranslate nohighlight">\(\dot{q}_c\)</span>. Esitmate <span class="math notranslate nohighlight">\(r_h\)</span> from the slope.</p></li>
+<li><p>Plot <span class="math notranslate nohighlight">\(\frac{1}{U}\)</span> as a function of <span class="math notranslate nohighlight">\(\dot{q}_c^{-0.8}\)</span> for fixed values of <span class="math notranslate nohighlight">\(\dot{q}_h\)</span>. Estimate r_c from the slope.</p></li>
 <li><p>Use the data and estimates of <span class="math notranslate nohighlight">\(r_h\)</span> and <span class="math notranslate nohighlight">\(r_c\)</span> to estimate <span class="math notranslate nohighlight">\(R_{tube}\)</span>.</p></li>
 </ul>
 </div>
