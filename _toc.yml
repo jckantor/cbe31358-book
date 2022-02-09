@@ -13,7 +13,8 @@ parts:
       - file: notebooks/01/01_introduction-to-hx.ipynb
       - file: notebooks/01/02_double-pipe-hx.ipynb
       - file: notebooks/01/03_heat-transfer-model.ipynb
-      - file: notebooks/01/04_reports.ipynb
+      - file: notebooks/01/04_case-study.ipynb
+      - file: notebooks/01/05_reports.ipynb
       
   - caption: Methods
     numbered: true
