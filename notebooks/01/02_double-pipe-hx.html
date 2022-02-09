@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1.2. Double Pipe Heat Exchanger &#8212; CBE 31358 Laboratory I</title>
+    <title>1.3. Double Pipe Heat Exchanger &#8212; CBE 31358 Laboratory I</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1.3. Heat Transfer Coeffient Model" href="03_heat-transfer-model.html" />
+    <link rel="next" title="1.4. Heat Transfer Coeffient Model" href="03_heat-transfer-model.html" />
     <link rel="prev" title="1.1. Introduction to Heat Exchangers" href="01_introduction-to-hx.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -121,17 +121,22 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     1.2. Double Pipe Heat Exchanger
+     1.3. Double Pipe Heat Exchanger
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="03_heat-transfer-model.html">
-     1.3. Heat Transfer Coeffient Model
+     1.4. Heat Transfer Coeffient Model
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="04_reports.html">
-     1.4. Reports
+    <a class="reference internal" href="04_case-study.html">
+     1.5. Case Study: Analysis of a Double Pipe Heat Exchanger
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05_reports.html">
+     1.6. Experiments and Reports
     </a>
    </li>
   </ul>
@@ -259,39 +264,39 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#experimental-goals">
-   1.2.1. Experimental Goals
+   1.3.1. Experimental Goals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#co-current-operation">
-   1.2.2. Co-Current Operation
+   1.3.2. Co-Current Operation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#rating-calculations">
-     1.2.2.1. Rating Calculations
+     1.3.2.1. Rating Calculations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#measuring-heat-transfer-coefficient">
-     1.2.2.2. Measuring Heat Transfer Coefficient
+     1.3.2.2. Measuring Heat Transfer Coefficient
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#rating-revisited">
-     1.2.2.3. Rating, revisited
+     1.3.2.3. Rating, revisited
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#counter-current-operation">
-   1.2.3. Counter-Current Operation
+   1.3.3. Counter-Current Operation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
-     1.2.3.1. Rating Calculations
+     1.3.3.1. Rating Calculations
     </a>
    </li>
   </ul>
@@ -318,39 +323,39 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#experimental-goals">
-   1.2.1. Experimental Goals
+   1.3.1. Experimental Goals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#co-current-operation">
-   1.2.2. Co-Current Operation
+   1.3.2. Co-Current Operation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#rating-calculations">
-     1.2.2.1. Rating Calculations
+     1.3.2.1. Rating Calculations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#measuring-heat-transfer-coefficient">
-     1.2.2.2. Measuring Heat Transfer Coefficient
+     1.3.2.2. Measuring Heat Transfer Coefficient
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#rating-revisited">
-     1.2.2.3. Rating, revisited
+     1.3.2.3. Rating, revisited
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#counter-current-operation">
-   1.2.3. Counter-Current Operation
+   1.3.3. Counter-Current Operation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
-     1.2.3.1. Rating Calculations
+     1.3.3.1. Rating Calculations
     </a>
    </li>
   </ul>
@@ -365,9 +370,9 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="double-pipe-heat-exchanger">
-<h1><span class="section-number">1.2. </span>Double Pipe Heat Exchanger<a class="headerlink" href="#double-pipe-heat-exchanger" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">1.3. </span>Double Pipe Heat Exchanger<a class="headerlink" href="#double-pipe-heat-exchanger" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="experimental-goals">
-<h2><span class="section-number">1.2.1. </span>Experimental Goals<a class="headerlink" href="#experimental-goals" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3.1. </span>Experimental Goals<a class="headerlink" href="#experimental-goals" title="Permalink to this headline">¶</a></h2>
 <p>There are three basic calculations for heat exchanger design.</p>
 <ul class="simple">
 <li><p><strong>Rating.</strong> Given the size, geometry, entering flowrates and streaam temperatures, compute the heat transferred.</p></li>
@@ -377,9 +382,9 @@
 <p>In this experiment, you will conduct experiments and gather data needed characterize heat exchanger performance to create a preditive model for rating calculations. You will then test your models ability to predict heat exchanger performance for other operating conditions.</p>
 </div>
 <div class="section" id="co-current-operation">
-<h2><span class="section-number">1.2.2. </span>Co-Current Operation<a class="headerlink" href="#co-current-operation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3.2. </span>Co-Current Operation<a class="headerlink" href="#co-current-operation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="rating-calculations">
-<h3><span class="section-number">1.2.2.1. </span>Rating Calculations<a class="headerlink" href="#rating-calculations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.2.1. </span>Rating Calculations<a class="headerlink" href="#rating-calculations" title="Permalink to this headline">¶</a></h3>
 <p>Consider a heat exchanger in a co-current configuration. Label one end <span class="math notranslate nohighlight">\(z=0\)</span> and the other <span class="math notranslate nohighlight">\(z=1\)</span>. <span class="math notranslate nohighlight">\(z\)</span> changes continuously from 0 to 1 over the length of the heat exchanger. If the cross-sectional for heat transfer is constant then</p>
 <div class="math notranslate nohighlight">
 \[dA = A dz\]</div>
@@ -457,7 +462,7 @@ Q_c &amp; = \rho_c\dot{q}_c C_{p,c} (T_{c,1} - T_{c,0})
 </div>
 </div>
 <div class="section" id="measuring-heat-transfer-coefficient">
-<h3><span class="section-number">1.2.2.2. </span>Measuring Heat Transfer Coefficient<a class="headerlink" href="#measuring-heat-transfer-coefficient" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.2.2. </span>Measuring Heat Transfer Coefficient<a class="headerlink" href="#measuring-heat-transfer-coefficient" title="Permalink to this headline">¶</a></h3>
 <p>An analytical solution for the difference <span class="math notranslate nohighlight">\(T_h - T_c\)</span> is possible for this system of equations. Subtracting the second equation from the first gives</p>
 <div class="math notranslate nohighlight">
 \[\frac{d(T_h - T_c)}{dz} = -UA\left(\frac{1}{\rho_h\dot{q}_hC_{p,h}} + \frac{1}{\rho_c\dot{q}_cC_{p,c}}\right) (T_h - T_c)\]</div>
@@ -595,7 +600,7 @@ U (model fit) = 554.4 watt/deg C/m**2
 </div>
 </div>
 <div class="section" id="rating-revisited">
-<h3><span class="section-number">1.2.2.3. </span>Rating, revisited<a class="headerlink" href="#rating-revisited" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.2.3. </span>Rating, revisited<a class="headerlink" href="#rating-revisited" title="Permalink to this headline">¶</a></h3>
 <p>Integrating</p>
 <div class="math notranslate nohighlight">
 \[dQ = UA (T_h - T_c) dz\]</div>
@@ -620,9 +625,9 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\rho\dot{q}
 </div>
 </div>
 <div class="section" id="counter-current-operation">
-<h2><span class="section-number">1.2.3. </span>Counter-Current Operation<a class="headerlink" href="#counter-current-operation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3.3. </span>Counter-Current Operation<a class="headerlink" href="#counter-current-operation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
-<h3><span class="section-number">1.2.3.1. </span>Rating Calculations<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.3.1. </span>Rating Calculations<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Counter-current operation requires a different method of solution. For this case we will assume the cold water stream enters at <span class="math notranslate nohighlight">\(z=0\)</span> while the hot stream enters at <span class="math notranslate nohighlight">\(z=1\)</span>. As before, heat is transferred from the hot stream to the cold stream</p>
 <div class="math notranslate nohighlight">
 \[dQ = UA (T_h - T_c) dz\]</div>
@@ -729,7 +734,7 @@ Q &amp; = UA(T_{h,0} - T_{c,0}) \int_0^1 \exp\left(-UA\left(\frac{1}{\rho\dot{q}
     <a class='right-next' id="next-link" href="03_heat-transfer-model.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.3. </span>Heat Transfer Coeffient Model</p>
+        <p class="prev-next-title"><span class="section-number">1.4. </span>Heat Transfer Coeffient Model</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
