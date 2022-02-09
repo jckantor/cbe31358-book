@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Reports
+# # Experiments and Reports
+
+# ## Experiments
 # 
+# For this project you will need to gather data on two different heat exchangers mounted on the GUNT WL 315C equ
 
 # ## Progress Report
 
