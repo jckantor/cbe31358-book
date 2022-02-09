@@ -4,7 +4,6 @@
 # # Heat Transfer Coeffient Model
 # 
 
-# ## Heat Transfer Coefficient
 # 
 # The key performance parameter for the heat transfer device is the overall heat transfer coefficient $U$. The overall heat transfer coefficient is established by series of transport mechanisms ... 
 # 
