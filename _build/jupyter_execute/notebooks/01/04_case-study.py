@@ -135,6 +135,12 @@ sx.sort_values("Hot Flow (L/hr)").groupby("Flow Rate C").plot(x = "Hot Flow (L/h
 # This suggests a linear regression for $R = \frac{1}{UA}$ in terms of $X_h = \dot{q}_h^{-0.8}$ and $X_c  = \dot{q}_c^{-0.8}$.
 # 
 
+# :::{admonition} Enhancement: Convert to Skikit-learn
+# 
+# The following model fit should be converted to Scikit-learn to enable use of ML tools to the model building process.
+# 
+# :::
+
 # In[27]:
 
 

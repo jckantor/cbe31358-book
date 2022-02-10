@@ -1100,6 +1100,10 @@ dtype: object
 <div class="math notranslate nohighlight">
 \[\frac{1}{UA} = R =  R_{t} + r_h \dot{q}_h^{-0.8} + r_c \dot{q}_h^{-0.8}\]</div>
 <p>This suggests a linear regression for <span class="math notranslate nohighlight">\(R = \frac{1}{UA}\)</span> in terms of <span class="math notranslate nohighlight">\(X_h = \dot{q}_h^{-0.8}\)</span> and <span class="math notranslate nohighlight">\(X_c  = \dot{q}_c^{-0.8}\)</span>.</p>
+<div class="admonition-enhancement-convert-to-skikit-learn admonition">
+<p class="admonition-title">Enhancement: Convert to Skikit-learn</p>
+<p>The following model fit should be converted to Scikit-learn to enable use of ML tools to the model building process.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hx</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">hx</span><span class="p">[</span><span class="s2">&quot;UA&quot;</span><span class="p">]</span>
@@ -1402,7 +1406,7 @@ Notes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Heat Transfer Coefficient&#39;}&gt;
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_18_1.png" src="../../_images/04_case-study_18_1.png" />
+<img alt="../../_images/04_case-study_19_1.png" src="../../_images/04_case-study_19_1.png" />
 </div>
 </div>
 </div>
