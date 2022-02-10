@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,19 +33,19 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -53,7 +53,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1.6. Experiments and Reports" href="05_reports.html" />
+    <link rel="next" title="1.6. Lab Assignment" href="05_reports.html" />
     <link rel="prev" title="1.4. Heat Transfer Coeffient Model" href="03_heat-transfer-model.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -98,7 +98,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Experiments
  </span>
@@ -136,13 +136,13 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="05_reports.html">
-     1.6. Experiments and Reports
+     1.6. Lab Assignment
     </a>
    </li>
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Methods
  </span>
@@ -263,23 +263,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tidy-data">
-   1.5.1. Tidy Data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reading-data">
-   1.5.2. Reading Data
+   1.5.1. Reading Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#energy-balances">
-   1.5.3. Energy Balances
+   1.5.2. Energy Balances
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overall-heat-transfer-coefficient-ua">
-   1.5.4. Overall Heat Transfer Coefficient
+   1.5.3. Overall Heat Transfer Coefficient
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -287,7 +282,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#how-does-ua-depend-on-flowrates">
-   1.5.5. How does
+   1.5.4. How does
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -296,7 +291,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fitting-a-model-for-ua">
-   1.5.6. Fitting a Model for
+   1.5.5. Fitting a Model for
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -304,7 +299,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#comparison-of-model-to-experimental-data">
-   1.5.7. Comparison of Model to Experimental Data
+   1.5.6. Comparison of Model to Experimental Data
   </a>
  </li>
 </ul>
@@ -328,23 +323,18 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tidy-data">
-   1.5.1. Tidy Data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reading-data">
-   1.5.2. Reading Data
+   1.5.1. Reading Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#energy-balances">
-   1.5.3. Energy Balances
+   1.5.2. Energy Balances
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overall-heat-transfer-coefficient-ua">
-   1.5.4. Overall Heat Transfer Coefficient
+   1.5.3. Overall Heat Transfer Coefficient
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -352,7 +342,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#how-does-ua-depend-on-flowrates">
-   1.5.5. How does
+   1.5.4. How does
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -361,7 +351,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fitting-a-model-for-ua">
-   1.5.6. Fitting a Model for
+   1.5.5. Fitting a Model for
    <span class="math notranslate nohighlight">
     \(UA\)
    </span>
@@ -369,7 +359,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#comparison-of-model-to-experimental-data">
-   1.5.7. Comparison of Model to Experimental Data
+   1.5.6. Comparison of Model to Experimental Data
   </a>
  </li>
 </ul>
@@ -386,30 +376,8 @@
 <p>A stalwart of undergraduate chemical engineering laboratories is study of a double-pipe heat exchanger in counter-current flow. In this case, a student group collected multiple measurements of flow and temperature data from a heat exchanger with sensors configured as shown in the following diagram. (Note: The diagram shows co-current flow. The data was collected with the valves configured for counter-current flow of the hot stream.)</p>
 <p><img alt="" src="https://www.gunt.de/images/datasheet/1495/WL-315C-Comparison-of-various-heat-exchangers-gunt-1495-zeichnung_einzelheit_2.jpg" />
 Source: <a class="reference external" href="https://www.gunt.de/en/products/comparison-of-various-heat-exchangers/060.315C0/wl315c/glct-1:pa-148:pr-1495">Gunt WL315C Product Description</a></p>
-<div class="section" id="tidy-data">
-<h2><span class="section-number">1.5.1. </span>Tidy Data<a class="headerlink" href="#tidy-data" title="Permalink to this headline">¶</a></h2>
-<p>The student group designed a series of experiments measuring the performance of the heat exchanger to high (H), medium (M), and low (L) flowrates for both the hot and cold streams — a total of nine flowrate combinations. For each combination they reported data for three repeated observations. <a class="reference external" href="https://docs.google.com/spreadsheets/d/1wuJq3B4z0tmTIsRpm5zZUP-PBBxT6OpuJKeBlQcQ4Z0/edit?usp=sharing">A portion of their data is available on Google Sheets</a>. From this data they intend to compute the overall heat transfer coefficient <span class="math notranslate nohighlight">\(UA\)</span>, and attempt to fit a regression model for the heat transfer coefficients as a function of the flowrates.</p>
-<p>A screenshot of the data collected by the students is given below.</p>
-<p><img alt="" src="../../_images/pandas-google-sheets-4.png" /></p>
-<div class="admonition-study-question admonition">
-<p class="admonition-title">Study Question</p>
-<p>Before reading further, can you find three ways this data set is not consistent with Tidy Data?</p>
-<div class="toggle docutils container">
-<ul class="simple">
-<li><p>Empty rows are included for formatting that do not contain observations.</p></li>
-<li><p>Missing observations for trial 9.</p></li>
-<li><p>The use of vertical merging to indicate values by position rather than by actual content.</p></li>
-<li><p>The “Flow Rate (H/C)” includes two values in each cell.</p></li>
-<li><p>Information in the first column is meta-data, not a useful value to include in the observations.</p></li>
-</ul>
-</div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="reading-data">
-<h2><span class="section-number">1.5.2. </span>Reading Data<a class="headerlink" href="#reading-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.1. </span>Reading Data<a class="headerlink" href="#reading-data" title="Permalink to this headline">¶</a></h2>
 <p>The raw data was copied to a new sheet in the same Google Sheets file, edited to conform with Tidy Data, and a link created using the procedures outlined above for reading data from Google Sheets. The data is read in the following cell.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -521,7 +489,7 @@ Source: <a class="reference external" href="https://www.gunt.de/en/products/comp
 </div>
 </div>
 <div class="section" id="energy-balances">
-<h2><span class="section-number">1.5.3. </span>Energy Balances<a class="headerlink" href="#energy-balances" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.2. </span>Energy Balances<a class="headerlink" href="#energy-balances" title="Permalink to this headline">¶</a></h2>
 <p>The first step in this analysis is to verify the energy balance.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -710,12 +678,12 @@ Q_c &amp; = \dot{q}_c \rho C_p (T_{c,out} - T_{c, in})
 </div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;Observation&#39;, ylabel=&#39;kW&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_5_2.png" src="../../_images/04_case-study_5_2.png" />
+<img alt="../../_images/04_case-study_4_2.png" src="../../_images/04_case-study_4_2.png" />
 </div>
 </div>
 </div>
 <div class="section" id="overall-heat-transfer-coefficient-ua">
-<h2><span class="section-number">1.5.4. </span>Overall Heat Transfer Coefficient <span class="math notranslate nohighlight">\(UA\)</span><a class="headerlink" href="#overall-heat-transfer-coefficient-ua" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.3. </span>Overall Heat Transfer Coefficient <span class="math notranslate nohighlight">\(UA\)</span><a class="headerlink" href="#overall-heat-transfer-coefficient-ua" title="Permalink to this headline">¶</a></h2>
 <p>The performance of a counter-current heat exchanger is given the relationship</p>
 <div class="math notranslate nohighlight">
 \[Q = U A \Delta T_{lm} \]</div>
@@ -746,12 +714,12 @@ Q_c &amp; = \dot{q}_c \rho C_p (T_{c,out} - T_{c, in})
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;Observation&#39;, ylabel=&#39;kW/deg C&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_7_1.png" src="../../_images/04_case-study_7_1.png" />
+<img alt="../../_images/04_case-study_6_1.png" src="../../_images/04_case-study_6_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="how-does-ua-depend-on-flowrates">
-<h2><span class="section-number">1.5.5. </span>How does <span class="math notranslate nohighlight">\(UA\)</span> depend on flowrates?<a class="headerlink" href="#how-does-ua-depend-on-flowrates" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.4. </span>How does <span class="math notranslate nohighlight">\(UA\)</span> depend on flowrates?<a class="headerlink" href="#how-does-ua-depend-on-flowrates" title="Permalink to this headline">¶</a></h2>
 <p>The data clearly demonstrate that the heat transfer coefficient in the double pipe heat exchanger depends on flowrates of both the cold and hot liquid streams. We can see this by inspecting the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1096,7 +1064,7 @@ M    AxesSubplot(0.125,0.125;0.775x0.755)
 dtype: object
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_12_1.png" src="../../_images/04_case-study_12_1.png" />
+<img alt="../../_images/04_case-study_11_1.png" src="../../_images/04_case-study_11_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1115,12 +1083,12 @@ M    AxesSubplot(0.125,0.125;0.775x0.755)
 dtype: object
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_13_1.png" src="../../_images/04_case-study_13_1.png" />
+<img alt="../../_images/04_case-study_12_1.png" src="../../_images/04_case-study_12_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="fitting-a-model-for-ua">
-<h2><span class="section-number">1.5.6. </span>Fitting a Model for <span class="math notranslate nohighlight">\(UA\)</span><a class="headerlink" href="#fitting-a-model-for-ua" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.5. </span>Fitting a Model for <span class="math notranslate nohighlight">\(UA\)</span><a class="headerlink" href="#fitting-a-model-for-ua" title="Permalink to this headline">¶</a></h2>
 <p>For a series of transport mechanisms, the overall heat transfer coefficient</p>
 <div class="math notranslate nohighlight">
 \[\frac{1}{UA} = \frac{1}{U_hA} + \frac{1}{U_{tubeA}} + \frac{1}{U_cA}\]</div>
@@ -1422,7 +1390,7 @@ Notes:
 </div>
 </div>
 <div class="section" id="comparison-of-model-to-experimental-data">
-<h2><span class="section-number">1.5.7. </span>Comparison of Model to Experimental Data<a class="headerlink" href="#comparison-of-model-to-experimental-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.6. </span>Comparison of Model to Experimental Data<a class="headerlink" href="#comparison-of-model-to-experimental-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hx</span><span class="p">[</span><span class="s2">&quot;UA_pred&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">hx</span><span class="p">[</span><span class="s2">&quot;R_pred&quot;</span><span class="p">]</span>
@@ -1434,7 +1402,7 @@ Notes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Heat Transfer Coefficient&#39;}&gt;
 </pre></div>
 </div>
-<img alt="../../_images/04_case-study_19_1.png" src="../../_images/04_case-study_19_1.png" />
+<img alt="../../_images/04_case-study_18_1.png" src="../../_images/04_case-study_18_1.png" />
 </div>
 </div>
 </div>
@@ -1475,7 +1443,7 @@ Notes:
     <a class='right-next' id="next-link" href="05_reports.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1.6. </span>Experiments and Reports</p>
+        <p class="prev-next-title"><span class="section-number">1.6. </span>Lab Assignment</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
