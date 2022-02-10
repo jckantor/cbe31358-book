@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,17 +33,19 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -51,7 +53,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="1.6. Experiments and Reports" href="../01/05_reports.html" />
+    <link rel="prev" title="1.6. Lab Assignment" href="../01/05_reports.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -95,7 +97,7 @@
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Experiments
  </span>
@@ -133,13 +135,13 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../01/05_reports.html">
-     1.6. Experiments and Reports
+     1.6. Lab Assignment
     </a>
    </li>
   </ul>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Methods
  </span>
@@ -265,62 +267,67 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-messy-data">
+   1.2. Example: Messy Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reading-tidy-data">
-   1.2. Reading Tidy Data
+   1.3. Reading Tidy Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-csv-files">
-     1.2.1. From .csv files
+     1.3.1. From .csv files
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-google-sheets">
-     1.2.2. From Google Sheets
+     1.3.2. From Google Sheets
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-python">
-     1.2.3. From Python
+     1.3.3. From Python
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#accessing-data">
-   1.3. Accessing Data
+   1.4. Accessing Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#visualizing-data">
-   1.4. Visualizing Data
+   1.5. Visualizing Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tabular-display">
-     1.4.1. Tabular Display
+     1.5.1. Tabular Display
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#plotting">
-     1.4.2. Plotting
+     1.5.2. Plotting
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#scatter-plots">
-     1.4.3. Scatter Plots
+     1.5.3. Scatter Plots
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#statistical-plots">
-     1.4.4. Statistical Plots
+     1.5.4. Statistical Plots
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#concluding-remarks">
-   1.5. Concluding Remarks
+   1.6. Concluding Remarks
   </a>
  </li>
 </ul>
@@ -349,62 +356,67 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-messy-data">
+   1.2. Example: Messy Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reading-tidy-data">
-   1.2. Reading Tidy Data
+   1.3. Reading Tidy Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-csv-files">
-     1.2.1. From .csv files
+     1.3.1. From .csv files
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-google-sheets">
-     1.2.2. From Google Sheets
+     1.3.2. From Google Sheets
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#from-python">
-     1.2.3. From Python
+     1.3.3. From Python
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#accessing-data">
-   1.3. Accessing Data
+   1.4. Accessing Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#visualizing-data">
-   1.4. Visualizing Data
+   1.5. Visualizing Data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tabular-display">
-     1.4.1. Tabular Display
+     1.5.1. Tabular Display
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#plotting">
-     1.4.2. Plotting
+     1.5.2. Plotting
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#scatter-plots">
-     1.4.3. Scatter Plots
+     1.5.3. Scatter Plots
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#statistical-plots">
-     1.4.4. Statistical Plots
+     1.5.4. Statistical Plots
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#concluding-remarks">
-   1.5. Concluding Remarks
+   1.6. Concluding Remarks
   </a>
  </li>
 </ul>
@@ -447,11 +459,30 @@ Figure Source: Figure 12.1 from R for Data Science (Hadley Wickham &amp; Garrett
 Tiny Data assigns meaning to the structure of the data ffile, which significantly streamlines subsequenct coding and analysis. <a class="reference external" href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005097">Hart, et al., provide excellent contrasting examples of tidy and messy data</a>.</p>
 <p>These notes assume data is stored in data files organized using “Tiny Data” principles. If your data isn’t organized like this, the procedures described by <a class="reference external" href="https://vita.had.co.nz/papers/tidy-data.pdf">Wickham</a> may help reorgnize your data for more efficient analysis.</p>
 </div>
+<div class="section" id="example-messy-data">
+<h2><span class="section-number">1.2. </span>Example: Messy Data<a class="headerlink" href="#example-messy-data" title="Permalink to this headline">¶</a></h2>
+<p>The student group designed a series of experiments measuring the performance of the heat exchanger to high (H), medium (M), and low (L) flowrates for both the hot and cold streams — a total of nine flowrate combinations. For each combination they reported data for three repeated observations. <a class="reference external" href="https://docs.google.com/spreadsheets/d/1wuJq3B4z0tmTIsRpm5zZUP-PBBxT6OpuJKeBlQcQ4Z0/edit?usp=sharing">A portion of their data is available on Google Sheets</a>. From this data they intend to compute the overall heat transfer coefficient <span class="math notranslate nohighlight">\(UA\)</span>, and attempt to fit a regression model for the heat transfer coefficients as a function of the flowrates.</p>
+<p>A screenshot of the data collected by the students is given below.</p>
+<p><img alt="" src="../../_images/pandas-google-sheets-4.png" /></p>
+<div class="admonition-study-question admonition">
+<p class="admonition-title">Study Question</p>
+<p>Before reading further, can you find three ways this data set is not consistent with Tidy Data?</p>
+</div>
+<div class="toggle docutils container">
+<ul class="simple">
+<li><p>Empty rows are included for formatting that do not contain observations.</p></li>
+<li><p>Missing observations for trial 9.</p></li>
+<li><p>The use of vertical merging to indicate values by position rather than by actual content.</p></li>
+<li><p>The “Flow Rate (H/C)” includes two values in each cell.</p></li>
+<li><p>Information in the first column is meta-data, not a useful value to include in the observations.</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="reading-tidy-data">
-<h2><span class="section-number">1.2. </span>Reading Tidy Data<a class="headerlink" href="#reading-tidy-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.3. </span>Reading Tidy Data<a class="headerlink" href="#reading-tidy-data" title="Permalink to this headline">¶</a></h2>
 <p>We assume data is organized by Tidy Data principles for the rest of this notebook, with each data set corresponding to an experiment or other clearly defined collection of observations.</p>
 <div class="section" id="from-csv-files">
-<h3><span class="section-number">1.2.1. </span>From .csv files<a class="headerlink" href="#from-csv-files" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.1. </span>From .csv files<a class="headerlink" href="#from-csv-files" title="Permalink to this headline">¶</a></h3>
 <p>For files stored in <code class="docutils literal notranslate"><span class="pre">.csv</span></code> format, a pandas <strong>DataFrame</strong> object is created with the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code class="docutils literal notranslate"><span class="pre">read_csv(data_file)</span></code></a>. <code class="docutils literal notranslate"><span class="pre">data_file</span></code> is a string containing a url or the name of a local file. <code class="docutils literal notranslate"><span class="pre">read_csv()</span></code> function has many optional arguments, but for simple cases the path to the data file is often enough to do the job.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -585,7 +616,7 @@ Tiny Data assigns meaning to the structure of the data ffile, which significantl
 </div>
 </div>
 <div class="section" id="from-google-sheets">
-<h3><span class="section-number">1.2.2. </span>From Google Sheets<a class="headerlink" href="#from-google-sheets" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.2. </span>From Google Sheets<a class="headerlink" href="#from-google-sheets" title="Permalink to this headline">¶</a></h3>
 <p>Google sheets are a convenient to collect and share data. There is a complete API and libraries to enable full, authenticated, read/write access to Google Sheets.</p>
 <p>But if the data is not confidential and can be temporarilty published to the web for public access, then it takes just a few steps and one line of Python to read the data as pandas DataFrame.</p>
 <p>The first step is publish the sheet to the web. In Google Sheets, select “File &gt; Share &gt; Publish to the Web”.</p>
@@ -953,7 +984,7 @@ Tiny Data assigns meaning to the structure of the data ffile, which significantl
 </div>
 </div>
 <div class="section" id="from-python">
-<h3><span class="section-number">1.2.3. </span>From Python<a class="headerlink" href="#from-python" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.3.3. </span>From Python<a class="headerlink" href="#from-python" title="Permalink to this headline">¶</a></h3>
 <p>Pandas dataframes can be created directly in Python. Here we demonstrate use of a Python dictionary to create a dataframe with data for variables computed as numpy arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1067,7 +1098,7 @@ Tiny Data assigns meaning to the structure of the data ffile, which significantl
 </div>
 </div>
 <div class="section" id="accessing-data">
-<h2><span class="section-number">1.3. </span>Accessing Data<a class="headerlink" href="#accessing-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.4. </span>Accessing Data<a class="headerlink" href="#accessing-data" title="Permalink to this headline">¶</a></h2>
 <p>The core object in pandas is the <strong>DataFrame</strong>. For “Tidy Data”, a DataFrame will be collection of columns, each column containing observations of a single, unique variable. Each row is one observation of all variables.</p>
 <p>The <strong>index</strong> assigns a unique label to each row/observation.</p>
 <div class="cell docutils container">
@@ -1331,10 +1362,10 @@ Name: 3, dtype: float64
 </div>
 </div>
 <div class="section" id="visualizing-data">
-<h2><span class="section-number">1.4. </span>Visualizing Data<a class="headerlink" href="#visualizing-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5. </span>Visualizing Data<a class="headerlink" href="#visualizing-data" title="Permalink to this headline">¶</a></h2>
 <p>Pandas provides convenient tools for displaying data in tabular and graphical formats.</p>
 <div class="section" id="tabular-display">
-<h3><span class="section-number">1.4.1. </span>Tabular Display<a class="headerlink" href="#tabular-display" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.5.1. </span>Tabular Display<a class="headerlink" href="#tabular-display" title="Permalink to this headline">¶</a></h3>
 <p>The quickest way to display a dataframe as a table is with <code class="docutils literal notranslate"><span class="pre">display()</span></code>. Additional styling and formating options are available through a dataframe’s <code class="docutils literal notranslate"><span class="pre">.style</span></code> property.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1619,7 +1650,7 @@ Name: 3, dtype: float64
 </div>
 </div>
 <div class="section" id="plotting">
-<h3><span class="section-number">1.4.2. </span>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.5.2. </span>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h3>
 <p>An extensive variety of plots can be constructed using a dataframe’s <code class="docutils literal notranslate"><span class="pre">.plot()</span></code> method. Many of the usual Matploblib plotting commands can be accessed through options passed to <code class="docutils literal notranslate"><span class="pre">.plot()</span></code>. For many routine applications, a single call of a dataframe’s <code class="docutils literal notranslate"><span class="pre">.plot()</span></code> method can replace many lines of Python code using Matplotlib.</p>
 <p>For example, to plot all observations for a single variable.</p>
 <div class="cell docutils container">
@@ -1632,7 +1663,7 @@ Name: 3, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_31_1.png" src="../../_images/05-Tidy-Data-and-Pandas_31_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_32_1.png" src="../../_images/05-Tidy-Data-and-Pandas_32_1.png" />
 </div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">.plot()</span></code> method will often be used to plot one or more variables on the vertical ‘y’ axis as a function of another variable on the horizontal ‘x’ axes. Additional options specify line styles, grid, labels, titles, and much more.</p>
@@ -1647,7 +1678,7 @@ Name: 3, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;TC Lab&#39;}, xlabel=&#39;Time&#39;, ylabel=&#39;deg C&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_33_1.png" src="../../_images/05-Tidy-Data-and-Pandas_33_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_34_1.png" src="../../_images/05-Tidy-Data-and-Pandas_34_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1661,7 +1692,7 @@ Name: 3, dtype: float64
       dtype=object)
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_34_1.png" src="../../_images/05-Tidy-Data-and-Pandas_34_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_35_1.png" src="../../_images/05-Tidy-Data-and-Pandas_35_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1674,12 +1705,12 @@ Name: 3, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;Time&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_35_1.png" src="../../_images/05-Tidy-Data-and-Pandas_35_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_36_1.png" src="../../_images/05-Tidy-Data-and-Pandas_36_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="scatter-plots">
-<h3><span class="section-number">1.4.3. </span>Scatter Plots<a class="headerlink" href="#scatter-plots" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.5.3. </span>Scatter Plots<a class="headerlink" href="#scatter-plots" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;T1&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;T2&quot;</span><span class="p">)</span>
@@ -1690,12 +1721,12 @@ Name: 3, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;T1&#39;, ylabel=&#39;T2&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_37_1.png" src="../../_images/05-Tidy-Data-and-Pandas_37_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_38_1.png" src="../../_images/05-Tidy-Data-and-Pandas_38_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="statistical-plots">
-<h3><span class="section-number">1.4.4. </span>Statistical Plots<a class="headerlink" href="#statistical-plots" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.5.4. </span>Statistical Plots<a class="headerlink" href="#statistical-plots" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;T1&quot;</span><span class="p">,</span> <span class="s2">&quot;T2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -1707,13 +1738,13 @@ Name: 3, dtype: float64
         &lt;AxesSubplot:title={&#39;center&#39;:&#39;T2&#39;}&gt;]], dtype=object)
 </pre></div>
 </div>
-<img alt="../../_images/05-Tidy-Data-and-Pandas_39_1.png" src="../../_images/05-Tidy-Data-and-Pandas_39_1.png" />
+<img alt="../../_images/05-Tidy-Data-and-Pandas_40_1.png" src="../../_images/05-Tidy-Data-and-Pandas_40_1.png" />
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="concluding-remarks">
-<h2><span class="section-number">1.5. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.6. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
 <p>Learning Pandas and data analysis is like learning to ride a bicycle. Once you have the enough knowledge to get going, the next steps are about practice and learning by doing.</p>
 <p>This notobook provides basic knowledge to the use of pandas for data analysis for engineering applications. With Tidy Data principles, data analysis can be streamlined and intuitive. The next steps are to put these tools work on your data analaysis tasks, and explore other elements of the pandas library that can be useful in your work.</p>
 </div>
@@ -1748,7 +1779,7 @@ Name: 3, dtype: float64
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1.6. </span>Experiments and Reports</p>
+            <p class="prev-next-title"><span class="section-number">1.6. </span>Lab Assignment</p>
         </div>
     </a>
 </div>

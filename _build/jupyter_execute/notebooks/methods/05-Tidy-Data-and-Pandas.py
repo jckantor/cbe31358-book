@@ -37,6 +37,30 @@
 # 
 # These notes assume data is stored in data files organized using "Tiny Data" principles. If your data isn't organized like this, the procedures described by [Wickham](https://vita.had.co.nz/papers/tidy-data.pdf) may help reorgnize your data for more efficient analysis.
 
+# ## Example: Messy Data
+# 
+# The student group designed a series of experiments measuring the performance of the heat exchanger to high (H), medium (M), and low (L) flowrates for both the hot and cold streams --- a total of nine flowrate combinations. For each combination they reported data for three repeated observations. [A portion of their data is available on Google Sheets](https://docs.google.com/spreadsheets/d/1wuJq3B4z0tmTIsRpm5zZUP-PBBxT6OpuJKeBlQcQ4Z0/edit?usp=sharing). From this data they intend to compute the overall heat transfer coefficient $UA$, and attempt to fit a regression model for the heat transfer coefficients as a function of the flowrates.
+# 
+# A screenshot of the data collected by the students is given below.
+# 
+# ![](../../media/pandas-google-sheets-4.png)
+# 
+# :::{admonition} Study Question
+# 
+# Before reading further, can you find three ways this data set is not consistent with Tidy Data?
+# 
+# :::
+# 
+# :::{toggle}
+# 
+# * Empty rows are included for formatting that do not contain observations.
+# * Missing observations for trial 9.
+# * The use of vertical merging to indicate values by position rather than by actual content.
+# * The "Flow Rate (H/C)" includes two values in each cell.
+# * Information in the first column is meta-data, not a useful value to include in the observations.
+# 
+# :::
+
 # ## Reading Tidy Data
 # 
 # We assume data is organized by Tidy Data principles for the rest of this notebook, with each data set corresponding to an experiment or other clearly defined collection of observations.

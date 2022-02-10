@@ -8,29 +8,6 @@
 # ![](https://www.gunt.de/images/datasheet/1495/WL-315C-Comparison-of-various-heat-exchangers-gunt-1495-zeichnung_einzelheit_2.jpg)
 # Source: [Gunt WL315C Product Description](https://www.gunt.de/en/products/comparison-of-various-heat-exchangers/060.315C0/wl315c/glct-1:pa-148:pr-1495)
 
-# ## Tidy Data
-# 
-# The student group designed a series of experiments measuring the performance of the heat exchanger to high (H), medium (M), and low (L) flowrates for both the hot and cold streams --- a total of nine flowrate combinations. For each combination they reported data for three repeated observations. [A portion of their data is available on Google Sheets](https://docs.google.com/spreadsheets/d/1wuJq3B4z0tmTIsRpm5zZUP-PBBxT6OpuJKeBlQcQ4Z0/edit?usp=sharing). From this data they intend to compute the overall heat transfer coefficient $UA$, and attempt to fit a regression model for the heat transfer coefficients as a function of the flowrates.
-# 
-# A screenshot of the data collected by the students is given below.
-# 
-# ![](../../media/pandas-google-sheets-4.png)
-# 
-# :::{admonition} Study Question
-# 
-# Before reading further, can you find three ways this data set is not consistent with Tidy Data?
-# 
-# :::{toggle}
-# 
-# * Empty rows are included for formatting that do not contain observations.
-# * Missing observations for trial 9.
-# * The use of vertical merging to indicate values by position rather than by actual content.
-# * The "Flow Rate (H/C)" includes two values in each cell.
-# * Information in the first column is meta-data, not a useful value to include in the observations.
-# 
-# :::
-# :::
-
 # ## Reading Data
 # 
 # The raw data was copied to a new sheet in the same Google Sheets file, edited to conform with Tidy Data, and a link created using the procedures outlined above for reading data from Google Sheets. The data is read in the following cell.
