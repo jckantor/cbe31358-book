@@ -15,6 +15,7 @@ parts:
       - file: notebooks/01/03_heat-transfer-model.ipynb
       - file: notebooks/01/04_case-study.ipynb
       - file: notebooks/01/05_reports.ipynb
+    - file: notebooks/02/00_fault-finding.md
       
   - caption: Methods
     numbered: true
