@@ -1,6 +1,6 @@
 # specific to this repository
-references
-student-projects
+references/
+student-projects/
 
 .DS_Store
 .DS_Store/
