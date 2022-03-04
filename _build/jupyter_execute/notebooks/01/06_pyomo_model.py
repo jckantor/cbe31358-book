@@ -29,7 +29,7 @@
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[4]:
+# In[1]:
 
 
 import numpy as np
@@ -109,7 +109,7 @@ plt.tight_layout()
 # 
 # where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
 
-# In[5]:
+# In[2]:
 
 
 import pyomo.environ as pyo
@@ -133,7 +133,7 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
             m.Tc[z]: cold water temperature profile
     """
     
-    assert config in ["co-current", "counter-current"], "Unrecognized heat exchanger flow configuration"
+    assert config in ["co-current", "counter-current"], "Unrecognized flow configuration"
     y_config = 1 if config=="co-current" else 0
 
     # known parameter values
@@ -202,8 +202,8 @@ df = pd.DataFrame({
 
 fig, ax = plt.subplots(2, 1, figsize=(10, 6))
 df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
-df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, title="Heat Transfer Coefficient",
-        ylabel="kW/m**2/K", xlabel="Position")
+df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
+        title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
 plt.tight_layout()
 
 
