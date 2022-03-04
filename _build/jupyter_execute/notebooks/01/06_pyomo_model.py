@@ -5,9 +5,9 @@
 # 
 # This is additional material regarding the modeling and analysis of the double pipe heat exchanger.
 
-# ## Temperature Dependence of the Prandtl number
+# ## Temperature Dependence Heat Transfer Coefficient
 # 
-# Dittus-Boelter
+# ### Dittus-Boelter Equation
 # 
 # $$Nu = C\cdot Re^{4/5}\cdot Pr^{2/5}$$
 # 
@@ -24,12 +24,17 @@
 # k & = \text{thermal conductivity} & \frac{\text{W}}{\text{m}\cdot\text{K}} \\
 # \end{align*}
 # $$
+# 
+# ### Physical property equations from
+# 
+# Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[132]:
+# In[1]:
 
 
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 cp = 4183.0 # J/kg/K
 
@@ -91,7 +96,9 @@ plt.tight_layout()
 # \end{align*}
 # $$
 # 
-# where $T_w$ is the intermediate wall temperature, where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. From the Dittus-Boelter equation, we assume
+# where $T_w$ is the intermediate wall temperature, and where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. Experiments have demonstrated the heat transfer resistance of the tube wall is negligible compared to the heat transfer resistances in the bulk flow.
+# 
+# From the Dittus-Boelter equation, we assume
 # 
 # $$
 # \begin{align*}
@@ -102,12 +109,13 @@ plt.tight_layout()
 # 
 # where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
 
-# In[169]:
+# In[2]:
 
 
 import pyomo.environ as pyo
 import pyomo.dae as dae
-import pandas as pd   
+import pandas as pd 
+import matplotlib.pyplot as plt
 
 def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     """
@@ -128,14 +136,14 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     assert config in ["co-current", "counter-current"], "Unrecognized heat exchanger flow configuration"
     y_config = 1 if config=="co-current" else 0
 
-    # parameter values
+    # known parameter values
     A = 0.5       # square meters
-    U = 2000      # watts/square meter/deg C
     Cp = 4184     # Joules/kg/deg C    
     rho = 1.0     # 1 kg/liter
 
     m = pyo.ConcreteModel()
     
+    # estimated model parameters
     m.Ch = pyo.Param(initialize=5000.0)
     m.Cc = pyo.Param(initialize=5000.0)
 
@@ -144,22 +152,26 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     m.Th = pyo.Var(m.z, initialize=Th_feed)
     m.Tc = pyo.Var(m.z, initialize=Tc_feed)
     m.Tw = pyo.Var(m.z, initialize=(Th_feed + Tc_feed)/2)
-    m.Uh = pyo.Var(m.z, initialize=U)
-    m.Uc = pyo.Var(m.z, initialize=U)
+    m.Uh = pyo.Var(m.z, initialize=2000)
+    m.Uc = pyo.Var(m.z, initialize=2000)
     
     m.dTh = dae.DerivativeVar(m.Th, wrt=m.z)
     m.dTc = dae.DerivativeVar(m.Tc, wrt=m.z)
     
+    # feed conditions
+    m.Th[1 - y_config].fix(Th_feed)
+    m.Tc[0].fix(Tc_feed) 
+    
+    # local heat transfer coefficients
     @m.Constraint(m.z)
     def heat_transfer_ho(m, z):
-        Pr = prandtl(m.Th[z])
-        return m.Uh[z] == m.Ch * (qh/3600)**0.8 * Pr**0.4
+        return m.Uh[z] == m.Ch * (qh/3600)**0.8 * prandtl(m.Th[z])**0.4
     
     @m.Constraint(m.z)
     def heat_transfer_cold(m, z):
-        Pr = prandtl(m.Tc[z])
-        return m.Uc[z] == m.Cc * (qc/3600)**0.8 * Pr**0.4
+        return m.Uc[z] == m.Cc * (qc/3600)**0.8 * prandtl(m.Tc[z])**0.4
 
+    # stream energy balances
     @m.Constraint(m.z)
     def dThdz(m, z):
         return rho*Cp*(qh/3600)*m.dTh[z] == (-1)**y_config * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
@@ -168,9 +180,7 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     def dTcdz(m, z):
         return rho*Cp*(qc/3600)*m.dTc[z] == m.Uc[z]*A*(m.Th[z] - m.Tw[z])
     
-    m.Th[1 - y_config].fix(Th_feed)
-    m.Tc[0].fix(Tc_feed)  
-    
+    # wall energy balance
     @m.Constraint(m.z)
     def wall(m, z):
         return m.Uh[z]*(m.Th[z] - m.Tw[z]) == m.Uc[z]*(m.Tw[z] - m.Tc[z])
@@ -183,11 +193,11 @@ model = double_pipe("co-current")
 pyo.SolverFactory('ipopt').solve(model)
 
 df = pd.DataFrame({
-    "Th": [model.Th[z]() for z in m.z],
-    "Tw": [model.Tw[z]() for z in m.z],
-    "Tc": [model.Tc[z]() for z in m.z],
-    "Uh": [model.Uh[z]() for z in m.z],
-    "Uc": [model.Uc[z]() for z in m.z],
+    "Th": [model.Th[z]() for z in model.z],
+    "Tw": [model.Tw[z]() for z in model.z],
+    "Tc": [model.Tc[z]() for z in model.z],
+    "Uh": [model.Uh[z]() for z in model.z],
+    "Uc": [model.Uc[z]() for z in model.z],
 }, index=model.z)
 
 fig, ax = plt.subplots(2, 1, figsize=(12, 8))

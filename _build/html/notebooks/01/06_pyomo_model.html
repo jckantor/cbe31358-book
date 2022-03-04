@@ -273,9 +273,21 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#temperature-dependence-of-the-prandtl-number">
-   1.6.1. Temperature Dependence of the Prandtl number
+  <a class="reference internal nav-link" href="#temperature-dependence-heat-transfer-coefficient">
+   1.6.1. Temperature Dependence Heat Transfer Coefficient
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dittus-boelter-equation">
+     1.6.1.1. Dittus-Boelter Equation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#physical-property-equations-from">
+     1.6.1.2. Physical property equations from
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pyomo-dae-model-for-double-pipe-heat-exchanger">
@@ -303,9 +315,21 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#temperature-dependence-of-the-prandtl-number">
-   1.6.1. Temperature Dependence of the Prandtl number
+  <a class="reference internal nav-link" href="#temperature-dependence-heat-transfer-coefficient">
+   1.6.1. Temperature Dependence Heat Transfer Coefficient
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dittus-boelter-equation">
+     1.6.1.1. Dittus-Boelter Equation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#physical-property-equations-from">
+     1.6.1.2. Physical property equations from
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pyomo-dae-model-for-double-pipe-heat-exchanger">
@@ -324,9 +348,10 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="pyomo-model-of-the-double-pipe-heat-exchanger">
 <h1><span class="section-number">1.6. </span>Pyomo Model of the Double Pipe Heat Exchanger<a class="headerlink" href="#pyomo-model-of-the-double-pipe-heat-exchanger" title="Permalink to this headline">¶</a></h1>
 <p>This is additional material regarding the modeling and analysis of the double pipe heat exchanger.</p>
-<div class="section" id="temperature-dependence-of-the-prandtl-number">
-<h2><span class="section-number">1.6.1. </span>Temperature Dependence of the Prandtl number<a class="headerlink" href="#temperature-dependence-of-the-prandtl-number" title="Permalink to this headline">¶</a></h2>
-<p>Dittus-Boelter</p>
+<div class="section" id="temperature-dependence-heat-transfer-coefficient">
+<h2><span class="section-number">1.6.1. </span>Temperature Dependence Heat Transfer Coefficient<a class="headerlink" href="#temperature-dependence-heat-transfer-coefficient" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dittus-boelter-equation">
+<h3><span class="section-number">1.6.1.1. </span>Dittus-Boelter Equation<a class="headerlink" href="#dittus-boelter-equation" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[Nu = C\cdot Re^{4/5}\cdot Pr^{2/5}\]</div>
 <p>The Prandtl number for water is a reasonably strong function of temperature over the operating range of this heat exchanger.</p>
@@ -341,10 +366,15 @@ c_p &amp; = \text{specific heat} &amp; \frac{\text{J}}{\text{kg}\cdot\text{K}} \
 k &amp; = \text{thermal conductivity} &amp; \frac{\text{W}}{\text{m}\cdot\text{K}} \\
 \end{align*}
 \end{split}\]</div>
+</div>
+<div class="section" id="physical-property-equations-from">
+<h3><span class="section-number">1.6.1.2. </span>Physical property equations from<a class="headerlink" href="#physical-property-equations-from" title="Permalink to this headline">¶</a></h3>
+<p>Pátek, J., Hrubý, J., Klomfar, J., Součková, M., &amp; Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. <a class="reference external" href="https://aip.scitation.org/doi/10.1063/1.3043575">https://aip.scitation.org/doi/10.1063/1.3043575</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">cp</span> <span class="o">=</span> <span class="mf">4183.0</span> <span class="c1"># J/kg/K</span>
 
@@ -390,6 +420,7 @@ k &amp; = \text{thermal conductivity} &amp; \frac{\text{W}}{\text{m}\cdot\text{K
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="pyomo-dae-model-for-double-pipe-heat-exchanger">
 <h2><span class="section-number">1.6.2. </span>Pyomo DAE Model for Double Pipe Heat Exchanger<a class="headerlink" href="#pyomo-dae-model-for-double-pipe-heat-exchanger" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(y\)</span> be a binar indicator variable</p>
@@ -410,7 +441,8 @@ y = \begin{cases}
 U_h (T_h - T_w) &amp; = U_c (T_w - T_c) \\
 \end{align*}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_w\)</span> is the intermediate wall temperature, where <span class="math notranslate nohighlight">\(U_h\)</span> and <span class="math notranslate nohighlight">\(U_c\)</span> are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. From the Dittus-Boelter equation, we assume</p>
+<p>where <span class="math notranslate nohighlight">\(T_w\)</span> is the intermediate wall temperature, and where <span class="math notranslate nohighlight">\(U_h\)</span> and <span class="math notranslate nohighlight">\(U_c\)</span> are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. Experiments have demonstrated the heat transfer resistance of the tube wall is negligible compared to the heat transfer resistances in the bulk flow.</p>
+<p>From the Dittus-Boelter equation, we assume</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -423,7 +455,8 @@ U_c &amp; = C_c q_c^{4/5} Pr^{2/5} \\
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyomo.environ</span> <span class="k">as</span> <span class="nn">pyo</span>
 <span class="kn">import</span> <span class="nn">pyomo.dae</span> <span class="k">as</span> <span class="nn">dae</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>   
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">double_pipe</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="s2">&quot;co-current&quot;</span><span class="p">,</span> <span class="n">qh</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">qc</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">Th_feed</span><span class="o">=</span><span class="mf">55.0</span><span class="p">,</span> <span class="n">Tc_feed</span><span class="o">=</span><span class="mf">18.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -444,14 +477,14 @@ U_c &amp; = C_c q_c^{4/5} Pr^{2/5} \\
     <span class="k">assert</span> <span class="n">config</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;co-current&quot;</span><span class="p">,</span> <span class="s2">&quot;counter-current&quot;</span><span class="p">],</span> <span class="s2">&quot;Unrecognized heat exchanger flow configuration&quot;</span>
     <span class="n">y_config</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">config</span><span class="o">==</span><span class="s2">&quot;co-current&quot;</span> <span class="k">else</span> <span class="mi">0</span>
 
-    <span class="c1"># parameter values</span>
+    <span class="c1"># known parameter values</span>
     <span class="n">A</span> <span class="o">=</span> <span class="mf">0.5</span>       <span class="c1"># square meters</span>
-    <span class="n">U</span> <span class="o">=</span> <span class="mi">2000</span>      <span class="c1"># watts/square meter/deg C</span>
     <span class="n">Cp</span> <span class="o">=</span> <span class="mi">4184</span>     <span class="c1"># Joules/kg/deg C    </span>
     <span class="n">rho</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c1"># 1 kg/liter</span>
 
     <span class="n">m</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">ConcreteModel</span><span class="p">()</span>
     
+    <span class="c1"># estimated model parameters</span>
     <span class="n">m</span><span class="o">.</span><span class="n">Ch</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">5000.0</span><span class="p">)</span>
     <span class="n">m</span><span class="o">.</span><span class="n">Cc</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mf">5000.0</span><span class="p">)</span>
 
@@ -460,22 +493,26 @@ U_c &amp; = C_c q_c^{4/5} Pr^{2/5} \\
     <span class="n">m</span><span class="o">.</span><span class="n">Th</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">Th_feed</span><span class="p">)</span>
     <span class="n">m</span><span class="o">.</span><span class="n">Tc</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">Tc_feed</span><span class="p">)</span>
     <span class="n">m</span><span class="o">.</span><span class="n">Tw</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="p">(</span><span class="n">Th_feed</span> <span class="o">+</span> <span class="n">Tc_feed</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">Uh</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">U</span><span class="p">)</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">Uc</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="n">U</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">Uh</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">Uc</span> <span class="o">=</span> <span class="n">pyo</span><span class="o">.</span><span class="n">Var</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">initialize</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
     
     <span class="n">m</span><span class="o">.</span><span class="n">dTh</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="n">m</span><span class="o">.</span><span class="n">dTc</span> <span class="o">=</span> <span class="n">dae</span><span class="o">.</span><span class="n">DerivativeVar</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     
+    <span class="c1"># feed conditions</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y_config</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="n">Th_feed</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="n">Tc_feed</span><span class="p">)</span> 
+    
+    <span class="c1"># local heat transfer coefficients</span>
     <span class="nd">@m</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">heat_transfer_ho</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="n">Pr</span> <span class="o">=</span> <span class="n">prandtl</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Ch</span> <span class="o">*</span> <span class="p">(</span><span class="n">qh</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">**</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">Pr</span><span class="o">**</span><span class="mf">0.4</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Ch</span> <span class="o">*</span> <span class="p">(</span><span class="n">qh</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">**</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">prandtl</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">])</span><span class="o">**</span><span class="mf">0.4</span>
     
     <span class="nd">@m</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">heat_transfer_cold</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="n">Pr</span> <span class="o">=</span> <span class="n">prandtl</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Cc</span> <span class="o">*</span> <span class="p">(</span><span class="n">qc</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">**</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">Pr</span><span class="o">**</span><span class="mf">0.4</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Cc</span> <span class="o">*</span> <span class="p">(</span><span class="n">qc</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">**</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">prandtl</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">])</span><span class="o">**</span><span class="mf">0.4</span>
 
+    <span class="c1"># stream energy balances</span>
     <span class="nd">@m</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">dThdz</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">rho</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">qh</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">dTh</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">y_config</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
@@ -484,9 +521,7 @@ U_c &amp; = C_c q_c^{4/5} Pr^{2/5} \\
     <span class="k">def</span> <span class="nf">dTcdz</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">rho</span><span class="o">*</span><span class="n">Cp</span><span class="o">*</span><span class="p">(</span><span class="n">qc</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="o">.</span><span class="n">dTc</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
     
-    <span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y_config</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="n">Th_feed</span><span class="p">)</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="n">Tc_feed</span><span class="p">)</span>  
-    
+    <span class="c1"># wall energy balance</span>
     <span class="nd">@m</span><span class="o">.</span><span class="n">Constraint</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wall</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">])</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
@@ -499,11 +534,11 @@ U_c &amp; = C_c q_c^{4/5} Pr^{2/5} \\
 <span class="n">pyo</span><span class="o">.</span><span class="n">SolverFactory</span><span class="p">(</span><span class="s1">&#39;ipopt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;Th&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-    <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-    <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-    <span class="s2">&quot;Uh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-    <span class="s2">&quot;Uc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+    <span class="s2">&quot;Th&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+    <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+    <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+    <span class="s2">&quot;Uh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+    <span class="s2">&quot;Uc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
 <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
