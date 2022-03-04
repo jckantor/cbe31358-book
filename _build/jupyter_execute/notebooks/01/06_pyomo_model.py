@@ -69,18 +69,40 @@ ax[2].grid(True)
 plt.tight_layout()
 
 
-# ## Pyomo Model for Double Pipe Heat Exchanger
+# ## Pyomo DAE Model for Double Pipe Heat Exchanger
 # 
-# The is a two parameter model.
+# Let $y$ be a binar indicator variable
+# 
+# $$
+# y = \begin{cases}
+# 0 & \text{counter-current flow} \\
+# 1 & \text{co-current flow} \\
+# \end{cases}
+# $$
+# 
+# A model for the double-pipe heat exchanger is given by
 # 
 # $$
 # \begin{align*}
-# U_h & = C_h q_h^{4/5} Pr^{2/5} \\
-# U_c & = C_c q_c^{4/5} Pr^{2/5}
+# \rho_h\dot{q}_hC_{p,h} \frac{dT_h}{dz} & = (-1)^y U_hA(T_h - T_w)  & T_h(z=1-y) = T_{h,feed}\\
+# \rho_c\dot{q}_cC_{p,c} \frac{dT_c}{dz} & = U_cA(T_w - T_c) & T_c(z=0) = T_{c, feed} \\
+# \\
+# U_h (T_h - T_w) & = U_c (T_w - T_c) \\
 # \end{align*}
 # $$
+# 
+# where $T_w$ is the intermediate wall temperature, where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. From the Dittus-Boelter equation, we assume
+# 
+# $$
+# \begin{align*}
+# U_h & = C_h q_h^{4/5} Pr^{2/5}\\
+# U_c & = C_c q_c^{4/5} Pr^{2/5} \\
+# \end{align*}
+# $$
+# 
+# where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
 
-# In[158]:
+# In[169]:
 
 
 import pyomo.environ as pyo
@@ -102,6 +124,9 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
             m.Th[z]: hot water temperature profile
             m.Tc[z]: cold water temperature profile
     """
+    
+    assert config in ["co-current", "counter-current"], "Unrecognized heat exchanger flow configuration"
+    y_config = 1 if config=="co-current" else 0
 
     # parameter values
     A = 0.5       # square meters
@@ -111,14 +136,13 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
 
     m = pyo.ConcreteModel()
     
-    m.Ch = pyo.Param(initialize=3000.0)
-    m.Cc = pyo.Param(initialize=3000.0)
+    m.Ch = pyo.Param(initialize=5000.0)
+    m.Cc = pyo.Param(initialize=5000.0)
 
     m.z = dae.ContinuousSet(bounds=(0, 1))
 
     m.Th = pyo.Var(m.z, initialize=Th_feed)
     m.Tc = pyo.Var(m.z, initialize=Tc_feed)
-    
     m.Tw = pyo.Var(m.z, initialize=(Th_feed + Tc_feed)/2)
     m.Uh = pyo.Var(m.z, initialize=U)
     m.Uc = pyo.Var(m.z, initialize=U)
@@ -135,24 +159,17 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     def heat_transfer_cold(m, z):
         Pr = prandtl(m.Tc[z])
         return m.Uc[z] == m.Cc * (qc/3600)**0.8 * Pr**0.4
-    
-    if config == "co-current":
-        m.Th[0].fix(Th_feed)
-        @m.Constraint(m.z)
-        def dThdz(m, z):
-            return rho*Cp*(qh/3600)*m.dTh[z] == -m.Uh[z]*A*(m.Th[z] - m.Tw[z])
-    elif config == "counter-current":
-        m.Th[1].fix(Th_feed)  
-        @m.Constraint(m.z)
-        def dThdz(m, z):
-            return rho*Cp*(qh/3600)*m.dTh[z] == m.Uh[z]*A*(m.Th[z] - m.Tw[z])
-    else:
-        raise ValueError("Unrecognized heat exchanger flow configuration")
 
-    m.Tc[0].fix(Tc_feed)
+    @m.Constraint(m.z)
+    def dThdz(m, z):
+        return rho*Cp*(qh/3600)*m.dTh[z] == (-1)**y_config * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
+
     @m.Constraint(m.z)
     def dTcdz(m, z):
         return rho*Cp*(qc/3600)*m.dTc[z] == m.Uc[z]*A*(m.Th[z] - m.Tw[z])
+    
+    m.Th[1 - y_config].fix(Th_feed)
+    m.Tc[0].fix(Tc_feed)  
     
     @m.Constraint(m.z)
     def wall(m, z):
@@ -175,7 +192,7 @@ df = pd.DataFrame({
 
 fig, ax = plt.subplots(2, 1, figsize=(12, 8))
 df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
-df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 2000), lw=3, title="Heat Transfer Coefficient",
+df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, title="Heat Transfer Coefficient",
         ylabel="kW/m**2/K", xlabel="Position")
 plt.tight_layout()
 
