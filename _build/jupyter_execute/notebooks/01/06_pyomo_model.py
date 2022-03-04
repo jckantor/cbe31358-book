@@ -29,7 +29,7 @@
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[1]:
+# In[4]:
 
 
 import numpy as np
@@ -54,7 +54,7 @@ def prandtl(T_centigrade):
     return viscosity(T_centigrade)*cp/thermal_conductivity(T_centigrade)
 
 T = np.linspace(18, 55)
-fig, ax = plt.subplots(3, 1, figsize=(12, 8), sharex=True)
+fig, ax = plt.subplots(3, 1, figsize=(10, 6), sharex=True)
 
 ax[0].plot(T, list(map(viscosity, T)))
 ax[0].set_title("Viscosity")
@@ -109,7 +109,7 @@ plt.tight_layout()
 # 
 # where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
 
-# In[2]:
+# In[5]:
 
 
 import pyomo.environ as pyo
@@ -200,7 +200,7 @@ df = pd.DataFrame({
     "Uc": [model.Uc[z]() for z in model.z],
 }, index=model.z)
 
-fig, ax = plt.subplots(2, 1, figsize=(12, 8))
+fig, ax = plt.subplots(2, 1, figsize=(10, 6))
 df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
 df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, title="Heat Transfer Coefficient",
         ylabel="kW/m**2/K", xlabel="Position")
