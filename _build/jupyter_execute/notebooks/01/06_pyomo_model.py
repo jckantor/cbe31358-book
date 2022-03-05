@@ -82,10 +82,10 @@
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[6]:
+# In[22]:
 
 
-import numpy as np
+## import numpy as np
 import math
 import matplotlib.pyplot as plt
 
@@ -103,11 +103,12 @@ def thermal_conductivity(T):
     dc = [-0.32, -5.7, -12.0, -15.0]
     return sum(c*Tr**d for c, d in zip(cc, dc))
 
-def prandtl(T_centigrade):
-    return viscosity(T_centigrade)*cp/thermal_conductivity(T_centigrade)
-
 def temperature_dependence(T_centigrade):
     return thermal_conductivity(T_centigrade)**(2/3) * viscosity(T_centigrade)**(-7/15)
+
+def phi(T_centigrade):
+    return temperature_dependence(T_centigrade)/temperature_dependence(20)
+
 
 T = np.linspace(18, 55)
 fig, ax = plt.subplots(4, 1, figsize=(10, 8), sharex=True)
@@ -122,13 +123,13 @@ ax[1].set_title("Thermal Conductivity")
 ax[1].set_ylabel("J/kg/K")
 ax[1].grid(True)
 
-ax[2].plot(T, list(map(prandtl, T)))
-ax[2].set_title("Prandtl Number")
+ax[2].plot(T, list(map(temperature_dependence, T)))
+ax[2].set_title("Temperature Dependence")
 ax[2].set_xlabel("Temperature deg C")
 ax[2].grid(True)
 
-ax[3].plot(T, list(map(temperature_dependence, T)))
-ax[3].set_title("Temperature Dependence")
+ax[3].plot(T, list(map(phi, T)))
+ax[3].set_title("phi(T)")
 ax[3].set_xlabel("Temperature deg C")
 ax[3].grid(True)
 
@@ -163,18 +164,32 @@ plt.tight_layout()
 # 
 # $$
 # \begin{align*}
-# U_h & = C_h \dot{q}_h^{4/5} F(T_h)\\
-# U_c & = C_c \dot{q}_c^{4/5} F(T_c)\\
+# U_h & = C_h' \dot{q}_h^{4/5} F(T_h)\\
+# U_c & = C_c' \dot{q}_c^{4/5} F(T_c)\\
 # \end{align*}
 # $$
 # 
-# where $F(T)$ is the temperature dependent function of thermal conductivity and viscosity.
+# where $F(T)$ is the temperature dependent function of thermal conductivity and viscosity, and
 # 
 # $$F(T) =  \frac{k_b(T)^{2/3}}{ \mu_b(T)^{7/15}} $$
 # 
-# where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
+# Two parameters, $C_h'$ and $C_c'$ are needed to because of the different pipe geometries for the hot and cold streams.  
+# 
+# $$
+# \begin{align*}
+# U_h & = C_h\dot{q}_h^{4/5} \phi(T_h)\\
+# U_c & = C_c \dot{q}_c^{4/5} \phi(T_c)\\
+# \end{align*}
+# $$
+# 
+# Parameter $C_h = C_h'F(T_0)$ and $C_c = C_c'F(T_0)$ will be determined by parameter estimation from experimental data. The normalization function
+# 
+# $$\phi(T) = F(T)/F(T_0)$$
+# 
+# is used to normalize $C_h'$ and $C_c'$. The normalized parameters $C_h$ and $C_c$ would be the heat transfer coefficients at a reference flow of 1 liter/sec and a reference temperature $T_0 = 20$ deg C.
+# 
 
-# In[17]:
+# In[77]:
 
 
 import pyomo.environ as pyo
@@ -182,7 +197,7 @@ import pyomo.dae as dae
 import pandas as pd 
 import matplotlib.pyplot as plt
 
-def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
+def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     """
         Parameters:
             config (string): "co-current" or "counter-current"
@@ -209,16 +224,19 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     m = pyo.ConcreteModel()
     
     # estimated model parameters
-    m.Ch = pyo.Param(initialize=400.0)
-    m.Cc = pyo.Param(initialize=400.0)
+    m.Ch = pyo.Param(mutable=True, default=5000.0)
+    m.Cc = pyo.Param(mutable=True, default=5000.0)
+    
+    m.qh = pyo.Param(mutable=True, initialize=qh)
+    m.qc = pyo.Param(mutable=True, initialize=qc)
 
     m.z = dae.ContinuousSet(bounds=(0, 1))
 
     m.Th = pyo.Var(m.z, initialize=Th_feed)
     m.Tc = pyo.Var(m.z, initialize=Tc_feed)
     m.Tw = pyo.Var(m.z, initialize=(Th_feed + Tc_feed)/2)
-    m.Uh = pyo.Var(m.z, initialize=2000)
-    m.Uc = pyo.Var(m.z, initialize=2000)
+    m.Uh = pyo.Var(m.z, initialize=1500)
+    m.Uc = pyo.Var(m.z, initialize=1500)
     
     m.dTh = dae.DerivativeVar(m.Th, wrt=m.z)
     m.dTc = dae.DerivativeVar(m.Tc, wrt=m.z)
@@ -230,20 +248,20 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     # local heat transfer coefficients
     @m.Constraint(m.z)
     def heat_transfer_ho(m, z):
-        return m.Uh[z] == m.Ch * (qh/3600)**0.8 * temperature_dependence(m.Th[z])
+        return m.Uh[z] == m.Ch * (m.qh/3600)**0.8 * phi(m.Th[z])
     
     @m.Constraint(m.z)
     def heat_transfer_cold(m, z):
-        return m.Uc[z] == m.Cc * (qc/3600)**0.8 * temperature_dependence(m.Tc[z])
+        return m.Uc[z] == m.Cc * (m.qc/3600)**0.8 * phi(m.Tc[z])
 
     # stream energy balances
     @m.Constraint(m.z)
     def dThdz(m, z):
-        return rho*Cp*(qh/3600)*m.dTh[z] == (-1)**y_config * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
+        return rho*Cp*(m.qh/3600)*m.dTh[z] == (-1)**y_config * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
 
     @m.Constraint(m.z)
     def dTcdz(m, z):
-        return rho*Cp*(qc/3600)*m.dTc[z] == m.Uc[z]*A*(m.Th[z] - m.Tw[z])
+        return rho*Cp*(m.qc/3600)*m.dTc[z] == m.Uc[z]*A*(m.Th[z] - m.Tw[z])
     
     # wall energy balance
     @m.Constraint(m.z)
@@ -253,23 +271,48 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     pyo.TransformationFactory('dae.finite_difference').apply_to(m, nfe=20, wrt=m.z)
     return m
 
+def solve_hx(m):
+    pyo.SolverFactory('ipopt').solve(m)
+
+def visualize_hx(m):
+    df = pd.DataFrame({
+        "Th": [model.Th[z]() for z in model.z],
+        "Tw": [model.Tw[z]() for z in model.z],
+        "Tc": [model.Tc[z]() for z in model.z],
+        "Uh": [model.Uh[z]() for z in model.z],
+        "Uc": [model.Uc[z]() for z in model.z],
+    }, index=model.z)
+    fig, ax = plt.subplots(2, 1, figsize=(10, 6))
+    df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
+    df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
+            title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
+    plt.tight_layout()
     
-model = double_pipe("counter-current", qc=500, qh=500)
-pyo.SolverFactory('ipopt').solve(model)
+model = build_hx("co-current", qc=500, qh=500)
+solve_hx(model)
+visualize_hx(model)
 
-df = pd.DataFrame({
-    "Th": [model.Th[z]() for z in model.z],
-    "Tw": [model.Tw[z]() for z in model.z],
-    "Tc": [model.Tc[z]() for z in model.z],
-    "Uh": [model.Uh[z]() for z in model.z],
-    "Uc": [model.Uc[z]() for z in model.z],
-}, index=model.z)
 
-fig, ax = plt.subplots(2, 1, figsize=(10, 6))
-df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
-df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
-        title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
-plt.tight_layout()
+# ## Parameter Estimation
+# 
+# The model is parameterized by two coefficients $C_h$ and $C_c$ in the heat transfer model. The goal for parameter estimation is to find a values for $C_h$ and $C_c$ that fit the model over full operating range:
+# 
+# $$
+# \begin{align*}
+# &y \in [\text{co-current}, \text{counter-current}] \\
+# &\dot{q}_h^{min} \leq \dot{q}_h \leq \dot{q}_h^{max} \\
+# &\dot{q}_c^{min} \leq \dot{q}_c \leq \dot{q}_c^{max} \\
+# \end{align*}
+# $$
+# 
+# Operationally, the model wilk be used to determine the hot water flow necessary to temper the cold stream to a desired temperature at a desired flowrate. That is, given feed temperatures, flow configuration, desired cold stream flow and cold exit temperature, the model will be used to compute the required hot stream flowrate. The quality of the model will be measured by comparing the model's prediction for cold exit temperature to actual measurements.
+
+# In[75]:
+
+
+model = build_hx()
+solve_hx(model)
+visualize_hx(model)
 
 
 # In[ ]:
