@@ -6,7 +6,7 @@
 # This is additional material regarding the modeling and analysis of the double pipe heat exchanger.
 
 # ## Temperature Dependence Heat Transfer Coefficient
-# 
+
 # ### Dittus-Boelter Equation
 # 
 # $$Nu = C\cdot Re^{4/5}\cdot Pr^{2/5}$$
@@ -24,12 +24,65 @@
 # k & = \text{thermal conductivity} & \frac{\text{W}}{\text{m}\cdot\text{K}} \\
 # \end{align*}
 # $$
+
+# ### Whitaker Correlation
 # 
+# From a meta-analysis of data for well developed turbulent flow in a pipe, Stephen Whitaker proposed a correlation
+# 
+# $$Nu = 0.015\ Re^{0.83} Pr^{0.42}(\mu_b/\mu_0)^{0.14}$$
+# 
+# where $b$ refers to the bulk liquid and $0$ to liquid at the wall surface. The reference temperature for computing material propoerties is bulk liquid.
+# 
+# $$
+# \begin{align*}
+# Nu & = \frac{h D}{k_b} \\
+# Re & = \frac{\rho <v_z>D}{\mu_b} = \frac{\rho\dot{q}D}{\mu_b A_c}\\
+# Pr & = \frac{c_p \mu_b}{k_b} \\
+# \end{align*}
+# $$
+# 
+# where $h$ is the local heat transfer coefficient corresponding to $U$ in these notes. $D$ denotes hydraulic diameter, and $A_p$ is the cross-sectional area ($A_p = \frac{\pi D_H^2}{4}$). 
+# 
+
+# For water in the temperature range of interest, both $\rho$ and $c_p$ are weak functions of temperature.
+# Therefore we write a correlation for $U$ as
+# 
+# $$
+# \begin{align*}
+# U & = C\ k_b (\frac{\dot{q}}{\mu_b})^{0.83}(\frac{\mu_b}{k_b})^{0.42}(\frac{\mu_b}{\mu_0})^{0.14} \\
+# \\
+# \implies U & = C\ \dot{q}^{0.83}\frac{k_b^{0.58}}{\mu_b^{0.27}\mu_o^{0.14}}
+# \end{align*}
+# $$
+# 
+# where $C$ is treated as a constant
+# 
+# $$C = 0.015\ \frac{1}{D} \left(\frac{\rho D}{A_c}\right)^{0.83} (c_p)^{0.42} $$
+
+# ## Colburn's Analogy
+# 
+# Colburn's analogy between momentum and heat transfer in turbulent flow yields a correlation
+# 
+# $$Nu = 0.023\ Re^{4/5} Pr^{1/3}$$
+# 
+# where properties are evaluated at the bulk flow temperature.
+# 
+# $$\frac{h D}{k_b} = 0.023\ \left(\frac{\rho \dot{q} D}{\mu_b A_c}\right)^{4/5} \left(\frac{c_p\mu_b}{k_b}\right)^{1/3}$$
+# 
+# $$h = 0.023\ \frac{k_b}{D} \left(\frac{\rho \dot{q} D}{\mu_b A_c}\right)^{4/5} \left(\frac{c_p\mu_b}{k_b}\right)^{1/3}$$
+
+# $$h =  
+# \underbrace{0.023\ \frac{1}{D} \left(\frac{\rho D}{A_c}\right)^{4/5} c_p^{1/3}}_{\text{constant }C}
+# \quad
+# \underbrace{\dot{q}^{4/5}}_{\text{flow rate}}
+# \quad
+# \underbrace{\frac{k_b^{2/3}}{ \mu_b^{7/15}}}_{\text{temperature dependent}}$$
+
 # ### Physical property equations from
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[1]:
+# In[6]:
 
 
 import numpy as np
@@ -53,8 +106,11 @@ def thermal_conductivity(T):
 def prandtl(T_centigrade):
     return viscosity(T_centigrade)*cp/thermal_conductivity(T_centigrade)
 
+def temperature_dependence(T_centigrade):
+    return thermal_conductivity(T_centigrade)**(2/3) * viscosity(T_centigrade)**(-7/15)
+
 T = np.linspace(18, 55)
-fig, ax = plt.subplots(3, 1, figsize=(10, 6), sharex=True)
+fig, ax = plt.subplots(4, 1, figsize=(10, 8), sharex=True)
 
 ax[0].plot(T, list(map(viscosity, T)))
 ax[0].set_title("Viscosity")
@@ -70,6 +126,11 @@ ax[2].plot(T, list(map(prandtl, T)))
 ax[2].set_title("Prandtl Number")
 ax[2].set_xlabel("Temperature deg C")
 ax[2].grid(True)
+
+ax[3].plot(T, list(map(temperature_dependence, T)))
+ax[3].set_title("Temperature Dependence")
+ax[3].set_xlabel("Temperature deg C")
+ax[3].grid(True)
 
 plt.tight_layout()
 
@@ -98,18 +159,22 @@ plt.tight_layout()
 # 
 # where $T_w$ is the intermediate wall temperature, and where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. Experiments have demonstrated the heat transfer resistance of the tube wall is negligible compared to the heat transfer resistances in the bulk flow.
 # 
-# From the Dittus-Boelter equation, we assume
+# From the Colburn analogy, we assume
 # 
 # $$
 # \begin{align*}
-# U_h & = C_h q_h^{4/5} Pr^{2/5}\\
-# U_c & = C_c q_c^{4/5} Pr^{2/5} \\
+# U_h & = C_h \dot{q}_h^{4/5} F(T_h)\\
+# U_c & = C_c \dot{q}_c^{4/5} F(T_c)\\
 # \end{align*}
 # $$
 # 
+# where $F(T)$ is the temperature dependent function of thermal conductivity and viscosity.
+# 
+# $$F(T) =  \frac{k_b(T)^{2/3}}{ \mu_b(T)^{7/15}} $$
+# 
 # where the two parameters, $C_h$ and $C_c$, will be determined by parameter estimation from experimental data.
 
-# In[2]:
+# In[17]:
 
 
 import pyomo.environ as pyo
@@ -144,8 +209,8 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     m = pyo.ConcreteModel()
     
     # estimated model parameters
-    m.Ch = pyo.Param(initialize=5000.0)
-    m.Cc = pyo.Param(initialize=5000.0)
+    m.Ch = pyo.Param(initialize=400.0)
+    m.Cc = pyo.Param(initialize=400.0)
 
     m.z = dae.ContinuousSet(bounds=(0, 1))
 
@@ -165,11 +230,11 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     # local heat transfer coefficients
     @m.Constraint(m.z)
     def heat_transfer_ho(m, z):
-        return m.Uh[z] == m.Ch * (qh/3600)**0.8 * prandtl(m.Th[z])**0.4
+        return m.Uh[z] == m.Ch * (qh/3600)**0.8 * temperature_dependence(m.Th[z])
     
     @m.Constraint(m.z)
     def heat_transfer_cold(m, z):
-        return m.Uc[z] == m.Cc * (qc/3600)**0.8 * prandtl(m.Tc[z])**0.4
+        return m.Uc[z] == m.Cc * (qc/3600)**0.8 * temperature_dependence(m.Tc[z])
 
     # stream energy balances
     @m.Constraint(m.z)
@@ -189,7 +254,7 @@ def double_pipe(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0)
     return m
 
     
-model = double_pipe("co-current")
+model = double_pipe("counter-current", qc=500, qh=500)
 pyo.SolverFactory('ipopt').solve(model)
 
 df = pd.DataFrame({
