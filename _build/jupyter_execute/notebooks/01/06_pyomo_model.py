@@ -138,7 +138,7 @@ plt.tight_layout()
 
 # ## Pyomo DAE Model for Double Pipe Heat Exchanger
 # 
-# Let $y$ be a binar indicator variable
+# Let $y$ be a binary indicator variable
 # 
 # $$
 # y = \begin{cases}
@@ -151,14 +151,14 @@ plt.tight_layout()
 # 
 # $$
 # \begin{align*}
-# \rho_h\dot{q}_hC_{p,h} \frac{dT_h}{dz} & = (-1)^y U_hA(T_h - T_w)  & T_h(z=1-y) = T_{h,feed}\\
-# \rho_c\dot{q}_cC_{p,c} \frac{dT_c}{dz} & = U_cA(T_w - T_c) & T_c(z=0) = T_{c, feed} \\
+# \rho_h\dot{q}_hC_{p,h} \frac{dT_h}{dz} & = (1-2y) U_hA(T_h - T_w)  & yT_h(0) + (1-y)T_h(1) = T_{h,feed}\\
+# \rho_c\dot{q}_cC_{p,c} \frac{dT_c}{dz} & = U_cA(T_w - T_c) & T_c(0) = T_{c, feed} \\
 # \\
 # U_h (T_h - T_w) & = U_c (T_w - T_c) \\
 # \end{align*}
 # $$
 # 
-# where $T_w$ is the intermediate wall temperature, and where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients determined by the temperatures in the bulk hot and cold fluids, respectively. Experiments have demonstrated the heat transfer resistance of the tube wall is negligible compared to the heat transfer resistances in the bulk flow.
+# where $T_w$ is the intermediate wall temperature, and where $U_h$ and $U_c$ are temperature dependent heat transfer coefficients. Temperature dependent physical properties are determined at the temperatures of the bulk fluids. Experiments have demonstrated the heat transfer resistance of the tube wall is negligible compared to the heat transfer resistances in the bulk flow. The variable $y$ forms a one-parameter homotopy extending from counter-current flow ($y=0$) to co-current flow ($y=1$).
 # 
 # From the Colburn analogy, we assume
 # 
@@ -189,7 +189,7 @@ plt.tight_layout()
 # is used to normalize $C_h'$ and $C_c'$. The normalized parameters $C_h$ and $C_c$ would be the heat transfer coefficients at a reference flow of 1 liter/sec and a reference temperature $T_0 = 20$ deg C.
 # 
 
-# In[77]:
+# In[128]:
 
 
 import pyomo.environ as pyo
@@ -197,10 +197,10 @@ import pyomo.dae as dae
 import pandas as pd 
 import matplotlib.pyplot as plt
 
-def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
+def build_hx(y_flow_config=0, qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     """
         Parameters:
-            config (string): "co-current" or "counter-current"
+            y_flow_config: 0 for counter-current, 1 for co-current
             qh (float): hot water flowrate in liters/hour
             qc (float): cold water flowrate in liters/hour
             Th_feed (float): hot water feed temperature in C
@@ -213,8 +213,7 @@ def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
             m.Tc[z]: cold water temperature profile
     """
     
-    assert config in ["co-current", "counter-current"], "Unrecognized flow configuration"
-    y_config = 1 if config=="co-current" else 0
+    assert (y_flow_config >= 0) and (y_flow_config <= 1), "Unrealizalbe flow configuration"
 
     # known parameter values
     A = 0.5       # square meters
@@ -227,6 +226,8 @@ def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     m.Ch = pyo.Param(mutable=True, default=5000.0)
     m.Cc = pyo.Param(mutable=True, default=5000.0)
     
+    # operating inputs
+    m.y = pyo.Param(mutable=True, initialize=y_flow_config)
     m.qh = pyo.Param(mutable=True, initialize=qh)
     m.qc = pyo.Param(mutable=True, initialize=qc)
 
@@ -242,8 +243,11 @@ def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     m.dTc = dae.DerivativeVar(m.Tc, wrt=m.z)
     
     # feed conditions
-    m.Th[1 - y_config].fix(Th_feed)
     m.Tc[0].fix(Tc_feed) 
+    
+    @m.Constraint()
+    def flow_configuration(m):
+        return m.y*m.Th[0] + (1 - m.y)*m.Th[1] == Th_feed
     
     # local heat transfer coefficients
     @m.Constraint(m.z)
@@ -257,7 +261,7 @@ def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     # stream energy balances
     @m.Constraint(m.z)
     def dThdz(m, z):
-        return rho*Cp*(m.qh/3600)*m.dTh[z] == (-1)**y_config * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
+        return rho*Cp*(m.qh/3600)*m.dTh[z] == (1 - 2*m.y) * m.Uh[z]*A*(m.Th[z] - m.Tw[z])
 
     @m.Constraint(m.z)
     def dTcdz(m, z):
@@ -269,28 +273,31 @@ def build_hx(config="co-current", qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
         return m.Uh[z]*(m.Th[z] - m.Tw[z]) == m.Uc[z]*(m.Tw[z] - m.Tc[z])
 
     pyo.TransformationFactory('dae.finite_difference').apply_to(m, nfe=20, wrt=m.z)
+    
+    m.solve = lambda: pyo.SolverFactory("ipopt").solve(m)
+    
+    def _visualize():
+        df = pd.DataFrame({
+            "Th": [model.Th[z]() for z in model.z],
+            "Tw": [model.Tw[z]() for z in model.z],
+            "Tc": [model.Tc[z]() for z in model.z],
+            "Uh": [model.Uh[z]() for z in model.z],
+            "Uc": [model.Uc[z]() for z in model.z],
+            }, index=model.z)
+        fig, ax = plt.subplots(2, 1, figsize=(10, 6))
+        df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
+        df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
+                title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
+        plt.tight_layout()
+        
+    m.visualize = lambda: _visualize()
+    
     return m
 
-def solve_hx(m):
-    pyo.SolverFactory('ipopt').solve(m)
-
-def visualize_hx(m):
-    df = pd.DataFrame({
-        "Th": [model.Th[z]() for z in model.z],
-        "Tw": [model.Tw[z]() for z in model.z],
-        "Tc": [model.Tc[z]() for z in model.z],
-        "Uh": [model.Uh[z]() for z in model.z],
-        "Uc": [model.Uc[z]() for z in model.z],
-    }, index=model.z)
-    fig, ax = plt.subplots(2, 1, figsize=(10, 6))
-    df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
-    df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
-            title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
-    plt.tight_layout()
     
-model = build_hx("co-current", qc=500, qh=500)
-solve_hx(model)
-visualize_hx(model)
+hx_model = build_hx(y_flow_config=0, qc=500, qh=500)
+hx_model.solve()
+hx_model.visualize()
 
 
 # ## Parameter Estimation
@@ -299,7 +306,7 @@ visualize_hx(model)
 # 
 # $$
 # \begin{align*}
-# &y \in [\text{co-current}, \text{counter-current}] \\
+# &y = \begin{cases} 0 & \text{counter-current} \\ 1 & \text{co-current} \end{cases} \\
 # &\dot{q}_h^{min} \leq \dot{q}_h \leq \dot{q}_h^{max} \\
 # &\dot{q}_c^{min} \leq \dot{q}_c \leq \dot{q}_c^{max} \\
 # \end{align*}
@@ -307,12 +314,14 @@ visualize_hx(model)
 # 
 # Operationally, the model wilk be used to determine the hot water flow necessary to temper the cold stream to a desired temperature at a desired flowrate. That is, given feed temperatures, flow configuration, desired cold stream flow and cold exit temperature, the model will be used to compute the required hot stream flowrate. The quality of the model will be measured by comparing the model's prediction for cold exit temperature to actual measurements.
 
-# In[75]:
+# In[129]:
 
 
-model = build_hx()
-solve_hx(model)
-visualize_hx(model)
+hx_model = build_hx()
+
+hx_model.y = 0
+hx_model.solve()
+hx_model.visualize()
 
 
 # In[ ]:
