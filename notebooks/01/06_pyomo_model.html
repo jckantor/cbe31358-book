@@ -381,7 +381,22 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="pyomo-model-of-the-double-pipe-heat-exchanger">
 <h1><span class="section-number">1.6. </span>Pyomo Model of the Double Pipe Heat Exchanger<a class="headerlink" href="#pyomo-model-of-the-double-pipe-heat-exchanger" title="Permalink to this headline">¶</a></h1>
-<p>This is additional material regarding the modeling and analysis of the double pipe heat exchanger.</p>
+<p>This is additional material regarding the modeling and analysis of the double pipe heat exchanger. If you are using this notebook in Google Colab, run the following cell to import needed libraries to run the notebook code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -q pyomo
+<span class="o">!</span>wget -N -q <span class="s2">&quot;https://ampl.com/dl/open/ipopt/ipopt-linux64.zip&quot;</span>
+<span class="o">!</span>unzip -o -q ipopt-linux64
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/bin/bash: wget: command not found
+unzip:  cannot find or open ipopt-linux64, ipopt-linux64.zip or ipopt-linux64.ZIP.
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="temperature-dependence-heat-transfer-coefficient">
 <h2><span class="section-number">1.6.1. </span>Temperature Dependence Heat Transfer Coefficient<a class="headerlink" href="#temperature-dependence-heat-transfer-coefficient" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="dittus-boelter-equation">
@@ -453,7 +468,7 @@ U &amp; = C\ k_b (\frac{\dot{q}}{\mu_b})^{0.83}(\frac{\mu_b}{k_b})^{0.42}(\frac{
 <p>Pátek, J., Hrubý, J., Klomfar, J., Součková, M., &amp; Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. <a class="reference external" href="https://aip.scitation.org/doi/10.1063/1.3043575">https://aip.scitation.org/doi/10.1063/1.3043575</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## import numpy as np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -506,7 +521,7 @@ U &amp; = C\ k_b (\frac{\dot{q}}{\mu_b})^{0.83}(\frac{\mu_b}{k_b})^{0.42}(\frac{
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/06_pyomo_model_8_0.png" src="../../_images/06_pyomo_model_8_0.png" />
+<img alt="../../_images/06_pyomo_model_9_0.png" src="../../_images/06_pyomo_model_9_0.png" />
 </div>
 </div>
 </div>
@@ -643,12 +658,12 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
     
     <span class="k">def</span> <span class="nf">_visualize</span><span class="p">():</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-            <span class="s2">&quot;Th&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-            <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-            <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-            <span class="s2">&quot;Uh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-            <span class="s2">&quot;Uc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
-            <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+            <span class="s2">&quot;Th&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">Th</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+            <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">Tw</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+            <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">Tc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+            <span class="s2">&quot;Uh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">Uh</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+            <span class="s2">&quot;Uc&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">Uc</span><span class="p">[</span><span class="n">z</span><span class="p">]()</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+            <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
         <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Th&quot;</span><span class="p">,</span> <span class="s2">&quot;Tc&quot;</span><span class="p">,</span> <span class="s2">&quot;Tw&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;deg C&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Position&quot;</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Uh&quot;</span><span class="p">,</span> <span class="s2">&quot;Uc&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
@@ -658,7 +673,6 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
     <span class="n">m</span><span class="o">.</span><span class="n">visualize</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">_visualize</span><span class="p">()</span>
     
     <span class="k">return</span> <span class="n">m</span>
-
     
 <span class="n">hx_model</span> <span class="o">=</span> <span class="n">build_hx</span><span class="p">(</span><span class="n">y_flow_config</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">qc</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">qh</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 <span class="n">hx_model</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
@@ -667,7 +681,7 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/06_pyomo_model_10_0.png" src="../../_images/06_pyomo_model_10_0.png" />
+<img alt="../../_images/06_pyomo_model_11_0.png" src="../../_images/06_pyomo_model_11_0.png" />
 </div>
 </div>
 </div>
@@ -694,7 +708,7 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/06_pyomo_model_12_0.png" src="../../_images/06_pyomo_model_12_0.png" />
+<img alt="../../_images/06_pyomo_model_13_0.png" src="../../_images/06_pyomo_model_13_0.png" />
 </div>
 </div>
 </div>
