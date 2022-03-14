@@ -3,7 +3,15 @@
 
 # # Pyomo Model of the Double Pipe Heat Exchanger
 # 
-# This is additional material regarding the modeling and analysis of the double pipe heat exchanger.
+# This is additional material regarding the modeling and analysis of the double pipe heat exchanger. If you are using this notebook in Google Colab, run the following cell to import needed libraries to run the notebook code.
+
+# In[2]:
+
+
+get_ipython().system('pip install -q pyomo')
+get_ipython().system('wget -N -q "https://ampl.com/dl/open/ipopt/ipopt-linux64.zip"')
+get_ipython().system('unzip -o -q ipopt-linux64')
+
 
 # ## Temperature Dependence Heat Transfer Coefficient
 
@@ -82,10 +90,10 @@
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[22]:
+# In[3]:
 
 
-## import numpy as np
+import numpy as np
 import math
 import matplotlib.pyplot as plt
 
@@ -189,7 +197,7 @@ plt.tight_layout()
 # is used to normalize $C_h'$ and $C_c'$. The normalized parameters $C_h$ and $C_c$ would be the heat transfer coefficients at a reference flow of 1 liter/sec and a reference temperature $T_0 = 20$ deg C.
 # 
 
-# In[128]:
+# In[4]:
 
 
 import pyomo.environ as pyo
@@ -278,12 +286,12 @@ def build_hx(y_flow_config=0, qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     
     def _visualize():
         df = pd.DataFrame({
-            "Th": [model.Th[z]() for z in model.z],
-            "Tw": [model.Tw[z]() for z in model.z],
-            "Tc": [model.Tc[z]() for z in model.z],
-            "Uh": [model.Uh[z]() for z in model.z],
-            "Uc": [model.Uc[z]() for z in model.z],
-            }, index=model.z)
+            "Th": [m.Th[z]() for z in m.z],
+            "Tw": [m.Tw[z]() for z in m.z],
+            "Tc": [m.Tc[z]() for z in m.z],
+            "Uh": [m.Uh[z]() for z in m.z],
+            "Uc": [m.Uc[z]() for z in m.z],
+            }, index=m.z)
         fig, ax = plt.subplots(2, 1, figsize=(10, 6))
         df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
         df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
@@ -293,7 +301,6 @@ def build_hx(y_flow_config=0, qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
     m.visualize = lambda: _visualize()
     
     return m
-
     
 hx_model = build_hx(y_flow_config=0, qc=500, qh=500)
 hx_model.solve()
