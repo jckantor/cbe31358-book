@@ -8,9 +8,11 @@
 # In[2]:
 
 
-get_ipython().system('pip install -q pyomo')
-get_ipython().system('wget -N -q "https://ampl.com/dl/open/ipopt/ipopt-linux64.zip"')
-get_ipython().system('unzip -o -q ipopt-linux64')
+import sys
+if "google.colab" in sys.modules:
+    get_ipython().system('pip install -q pyomo')
+    get_ipython().system('wget -N -q "https://ampl.com/dl/open/ipopt/ipopt-linux64.zip"')
+    get_ipython().system('unzip -o -q ipopt-linux64')
 
 
 # ## Temperature Dependence Heat Transfer Coefficient
@@ -90,7 +92,7 @@ get_ipython().system('unzip -o -q ipopt-linux64')
 # 
 # Pátek, J., Hrubý, J., Klomfar, J., Součková, M., & Harvey, A. H. (2009). Reference correlations for thermophysical properties of liquid water at 0.1 MPa. Journal of Physical and Chemical Reference Data, 38(1), 21-29. https://aip.scitation.org/doi/10.1063/1.3043575
 
-# In[3]:
+# In[4]:
 
 
 import numpy as np
@@ -197,7 +199,7 @@ plt.tight_layout()
 # is used to normalize $C_h'$ and $C_c'$. The normalized parameters $C_h$ and $C_c$ would be the heat transfer coefficients at a reference flow of 1 liter/sec and a reference temperature $T_0 = 20$ deg C.
 # 
 
-# In[4]:
+# In[26]:
 
 
 import pyomo.environ as pyo
@@ -282,9 +284,11 @@ def build_hx(y_flow_config=0, qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
 
     pyo.TransformationFactory('dae.finite_difference').apply_to(m, nfe=20, wrt=m.z)
     
+    # function to solve the model
     m.solve = lambda: pyo.SolverFactory("ipopt").solve(m)
     
-    def _visualize():
+    # function to plot the results
+    def _visualize(ax):
         df = pd.DataFrame({
             "Th": [m.Th[z]() for z in m.z],
             "Tw": [m.Tw[z]() for z in m.z],
@@ -292,19 +296,55 @@ def build_hx(y_flow_config=0, qh=600, qc=600, Th_feed=55.0, Tc_feed=18.0):
             "Uh": [m.Uh[z]() for z in m.z],
             "Uc": [m.Uc[z]() for z in m.z],
             }, index=m.z)
-        fig, ax = plt.subplots(2, 1, figsize=(10, 6))
-        df.plot(y=["Th", "Tc", "Tw"], ax=ax[0], grid=True, lw=3, ylabel="deg C", xlabel="Position")
-        df.plot(y=["Uh", "Uc"], ax=ax[1], grid=True, ylim=(0, 3000), lw=3, 
-                title="Heat Transfer Coefficient", ylabel="kW/m**2/K", xlabel="Position")
+        if ax is None:
+            fig, ax = plt.subplots(1, 1)
+        df.plot(y=["Th", "Tc", "Tw"], ax=ax, grid=True, lw=3)
+        df.plot(y=["Uh", "Uc"], ax=ax, secondary_y=True, grid=True, lw=3, style=['--', '--'])
+        ax.set_xlabel("Position")
+        ax.set_ylabel("deg C")
+        ax.set_title(f"Qc = {qc}, Qh = {qh}")
         plt.tight_layout()
+        return ax
         
-    m.visualize = lambda: _visualize()
+    m.visualize = lambda ax=None: _visualize(ax)
     
     return m
     
 hx_model = build_hx(y_flow_config=0, qc=500, qh=500)
 hx_model.solve()
 hx_model.visualize()
+
+
+# In[29]:
+
+
+# guess parameter values for heat transfer model
+Cc = 4000
+Ch = 5000
+
+# set grid of flowrates
+Qh = [300, 450, 600]
+Qc = [250, 400, 550]
+
+# set grid of plots
+fig, ax = plt.subplots(len(Qc), len(Qh), figsize=(15, 10))
+
+# do simulations
+for i, qc in enumerate(Qc):
+    for j, qh in enumerate(Qh):
+        hx_model = build_hx(y_flow_config=0, qc=qc, qh=qh)
+        hx_model.Cc = Cc
+        hx_model.Ch = Ch
+        hx_model.solve()
+        hx_model.visualize(ax[i, j])
+        
+# overlay temperature measurements
+for i, qc in enumerate(Qc):
+    for j, qh in enumerate(Qh):
+        z_pos = []
+        Th_data = []
+        Tc_data = []
+        ax[i, j].plot(z_pos, Th_data, 'r.', z_pos, Tc_data, 'b.', ms=10)
 
 
 # ## Parameter Estimation
@@ -321,7 +361,7 @@ hx_model.visualize()
 # 
 # Operationally, the model wilk be used to determine the hot water flow necessary to temper the cold stream to a desired temperature at a desired flowrate. That is, given feed temperatures, flow configuration, desired cold stream flow and cold exit temperature, the model will be used to compute the required hot stream flowrate. The quality of the model will be measured by comparing the model's prediction for cold exit temperature to actual measurements.
 
-# In[129]:
+# In[13]:
 
 
 hx_model = build_hx()
