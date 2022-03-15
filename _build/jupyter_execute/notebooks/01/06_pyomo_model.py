@@ -315,6 +315,8 @@ hx_model.solve()
 hx_model.visualize()
 
 
+# ## Comparing simulations to experimental data
+
 # In[29]:
 
 
