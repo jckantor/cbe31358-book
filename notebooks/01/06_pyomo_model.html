@@ -307,8 +307,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparing-simulations-to-experimental-data">
+   1.6.4. Comparing simulations to experimental data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#parameter-estimation">
-   1.6.4. Parameter Estimation
+   1.6.5. Parameter Estimation
   </a>
  </li>
 </ul>
@@ -366,8 +371,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparing-simulations-to-experimental-data">
+   1.6.4. Comparing simulations to experimental data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#parameter-estimation">
-   1.6.4. Parameter Estimation
+   1.6.5. Parameter Estimation
   </a>
  </li>
 </ul>
@@ -689,6 +699,9 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
 <img alt="../../_images/06_pyomo_model_11_1.png" src="../../_images/06_pyomo_model_11_1.png" />
 </div>
 </div>
+</div>
+<div class="section" id="comparing-simulations-to-experimental-data">
+<h2><span class="section-number">1.6.4. </span>Comparing simulations to experimental data<a class="headerlink" href="#comparing-simulations-to-experimental-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># guess parameter values for heat transfer model</span>
@@ -722,12 +735,12 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/06_pyomo_model_12_0.png" src="../../_images/06_pyomo_model_12_0.png" />
+<img alt="../../_images/06_pyomo_model_13_0.png" src="../../_images/06_pyomo_model_13_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="parameter-estimation">
-<h2><span class="section-number">1.6.4. </span>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.6.5. </span>Parameter Estimation<a class="headerlink" href="#parameter-estimation" title="Permalink to this headline">¶</a></h2>
 <p>The model is parameterized by two coefficients <span class="math notranslate nohighlight">\(C_h\)</span> and <span class="math notranslate nohighlight">\(C_c\)</span> in the heat transfer model. The goal for parameter estimation is to find a values for <span class="math notranslate nohighlight">\(C_h\)</span> and <span class="math notranslate nohighlight">\(C_c\)</span> that fit the model over full operating range:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -752,7 +765,7 @@ U_c &amp; = C_c \dot{q}_c^{4/5} \phi(T_c)\\
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Heat Transfer Coefficient&#39;}, xlabel=&#39;Position&#39;, ylabel=&#39;kW/m**2/K&#39;&gt;
 </pre></div>
 </div>
-<img alt="../../_images/06_pyomo_model_14_1.png" src="../../_images/06_pyomo_model_14_1.png" />
+<img alt="../../_images/06_pyomo_model_15_1.png" src="../../_images/06_pyomo_model_15_1.png" />
 </div>
 </div>
 </div>
